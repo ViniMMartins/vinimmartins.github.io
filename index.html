@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vinicius Martins — RPA & Software</title>
+    <meta name="description" content="Senior Automation Developer. Python, RPA (UiPath, A360, Power Automate), segurança e dev tooling." />
+    <meta property="og:title" content="Vinicius Martins — RPA & Software" />
+    <meta property="og:description" content="Senior Automation Developer. Python, RPA (UiPath, A360, Power Automate), segurança e dev tooling." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vinimmartins.github.io" />
+    <meta property="og:image" content="https://vinimmartins.github.io/assets/profile.jpg" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .chip { @apply inline-flex items-center rounded-full border px-3 py-1 text-sm; }
+    </style>
+</head>
+<body class="bg-white text-slate-800 dark:bg-slate-950 dark:text-slate-100">
+    <!-- Nav -->
+    <header class="sticky top-0 backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-slate-900/60 z-50">
+        <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="#" class="font-semibold">VM</a>
+        <div class="space-x-6 text-sm">
+            <a href="#sobre" class="hover:underline">Sobre</a>
+            <a href="#projetos" class="hover:underline">Projetos</a>
+            <a href="#contato" class="hover:underline">Contato</a>
+        </div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="max-w-5xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-[1.2fr,0.8fr] gap-10 items-center">
+        <div>
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight">Vinicius Martins</h1>
+        <p class="mt-3 text-lg opacity-90">Senior Automation Developer • Python • RPA (UiPath, Automation 360, Power Automate) • Segurança • Dev tooling</p>
+        <div class="mt-5 flex flex-wrap gap-2">
+            <span class="chip">Python</span>
+            <span class="chip">UiPath</span>
+            <span class="chip">Automation Anywhere</span>
+            <span class="chip">Power Automate</span>
+            <span class="chip">SQL</span>
+            <span class="chip">Git</span>
+        </div>
+        <div class="mt-8 flex gap-3">
+            <a href="#projetos" class="px-4 py-2 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900">Ver projetos</a>
+            <a href="#contato" class="px-4 py-2 rounded-xl border">Falar comigo</a>
+        </div>
+        </div>
+        <div class="justify-self-center">
+        <img src="assets/profile.jpeg" alt="Foto de Vinicius Martins" class="w-40 h-40 md:w-56 md:h-56 rounded-2xl object-cover shadow-lg">
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="sobre" class="max-w-5xl mx-auto px-4 py-10">
+        <h2 class="text-2xl font-semibold">Sobre</h2>
+        <p class="mt-3 leading-relaxed">
+        Trabalho com automação de processos desde 2018. Minha base é Python e RPA, com experiência em UiPath, Automation Anywhere (A360) e Power Automate, além de integração com APIs, SQL e práticas de segurança.
+        Gosto de criar ambientes de desenvolvimento seguros, padronizar logs e melhorar DX do time.
+        </p>
+    </section>
+
+    <!-- Projetos -->
+    <section id="projetos" class="max-w-5xl mx-auto px-4 py-10">
+        <h2 class="text-2xl font-semibold">Projetos em Destaque</h2>
+        <div class="mt-6 grid md:grid-cols-2 gap-6">
+        <!-- compraFacil -->
+        <article class="border rounded-2xl p-6 hover:shadow-lg transition">
+            <h3 class="text-xl font-semibold">compraFacil</h3>
+            <p class="mt-2 text-sm opacity-90">
+            Sistema caseiro de controle de compras/estoque com leitor 2D (QR/EAN). Flask + SQLite, lookup em Open Food Facts.
+            </p>
+            <div class="mt-3 text-sm opacity-80">Stack: Python, Flask, SQLAlchemy, Requests</div>
+            <div class="mt-4 flex gap-3">
+            <a class="underline" href="https://github.com/ViniMMartins/compraFacil" target="_blank" rel="noopener">Código</a>
+            <a class="underline" href="https://github.com/ViniMMartins/compraFacil#readme" target="_blank" rel="noopener">Docs</a>
+            </div>
+        </article>
+        </div>
+    </section>
+
+    <!-- Contato -->
+    <section id="contato" class="max-w-5xl mx-auto px-4 py-10">
+        <h2 class="text-2xl font-semibold">Contato</h2>
+        <p class="mt-3">Aberto a colaborações e freelas. Me chama:</p>
+        <ul class="mt-2 space-y-1">
+        <li>LinkedIn: <a class="underline" href="https://www.linkedin.com/in/vinicius-m-martins" target="_blank" rel="noopener">vinicius-m-martins</a></li>
+        <li>Email: <a class="underline" href="mailto:seu.email@exemplo.com">seu.email@exemplo.com</a></li>
+        <li>GitHub: <a class="underline" href="https://github.com/ViniMMartins" target="_blank" rel="noopener">@ViniMMartins</a></li>
+        </ul>
+        <p class="mt-6 text-xs opacity-60">© <span id="year"></span> Vinicius Martins</p>
+    </section>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
