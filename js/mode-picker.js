@@ -1,85 +1,68 @@
     // js/mode-picker.js
-    (function () {
-    const btn  = document.getElementById('mode-btn');
-    const menu = document.getElementById('mode-menu');
-    if (!btn || !menu) return;
-
+    (function initThemePicker() {
     const KEY = 'color-mode';
+    const defs = [
+        { btn: 'mode-btn', menu: 'mode-menu' },
+        { btn: 'mode-btn-mobile', menu: 'mode-menu-mobile' },
+    ];
+
+    function getSaved() {
+        try { return localStorage.getItem(KEY) || 'system'; } catch { return 'system'; }
+    }
     const labels = {
-        light: { icon: '☀️', textPT: 'Tema Claro', textEN: 'Light Mode' },
-        dark:  { icon: '🌙', textPT: 'Tema Escuro', textEN: 'Dark Mode' },
-        system:{ icon: '💻', textPT: 'Tema do Sistema', textEN: 'System Mode' },
+        light: { icon: '☀️', pt: 'Tema Claro', en: 'Light Mode' },
+        dark:  { icon: '🌙', pt: 'Tema Escuro', en: 'Dark Mode' },
+        system:{ icon: '💻', pt: 'Tema do Sistema', en: 'System Mode' },
     };
+    const lang = (() => { try { return localStorage.getItem('lang') || 'en'; } catch { return 'en'; } })();
 
-    function currentLang() {
-        try { return localStorage.getItem('lang') || 'en'; } catch { return 'en'; }
-    }
-
-    function setButtonLabel(mode) {
-        const lang = currentLang();
+    function setBtnLabel(btnEl, mode) {
         const t = labels[mode] || labels.system;
-        const text = lang === 'pt' ? t.textPT : t.textEN;
-        btn.textContent = `${t.icon} ${text}`;
+        btnEl.textContent = `${t.icon} ${lang === 'pt' ? t.pt : t.en}`;
     }
 
-    function openMenu() {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-        // foco no item selecionado
-        const mode = (localStorage.getItem(KEY) || 'system');
-        const item = menu.querySelector(`[data-mode="${mode}"]`);
-        item && item.focus && item.focus();
-    }
-
-    function closeMenu() {
-        menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-    }
-
-    // clique no botão
-    btn.addEventListener('click', () => {
-        const isOpen = !menu.classList.contains('hidden');
-        isOpen ? closeMenu() : openMenu();
-    });
-
-    // clique nas opções
-    menu.addEventListener('click', (e) => {
-        const li = e.target.closest('[data-mode]');
-        if (!li) return;
-        const mode = li.getAttribute('data-mode');
-        // usa o controlador principal
+    function applyMode(mode) {
         if (typeof window.setColorMode === 'function') {
         window.setColorMode(mode);
         } else {
-        localStorage.setItem(KEY, mode);
+        try { localStorage.setItem(KEY, mode); } catch {}
+        const html = document.documentElement;
+        const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = mode === 'dark' || (mode === 'system' && prefers);
+        html.classList.toggle('dark', isDark);
+        if (mode === 'system') html.removeAttribute('data-color-mode');
+        else html.setAttribute('data-color-mode', mode);
         }
-        setButtonLabel(mode);
-        closeMenu();
-    });
+    }
 
-    // fecha com clique fora
-    document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
-    });
+    defs.forEach(({ btn, menu }) => {
+        const btnEl = document.getElementById(btn);
+        const menuEl = document.getElementById(menu);
+        if (!btnEl || !menuEl) return;
 
-    // fecha com Esc
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeMenu();
-    });
+        // estado inicial
+        const initial = getSaved();
+        setBtnLabel(btnEl, initial);
 
-    // atualiza rótulo na troca de idioma
-    document.addEventListener('click', (e) => {
-        // se alguém clicar no botão de idioma, o i18n roda; atrasamos 1 tick e atualizamos
-        if (e.target && (e.target.id === 'lang-toggle')) {
-        setTimeout(() => {
-            const mode = (localStorage.getItem(KEY) || 'system');
-            setButtonLabel(mode);
-            // também atualiza os textos do menu se o i18n usar data-i18n
-        }, 0);
-        }
-    });
+        function open() { menuEl.classList.remove('hidden'); btnEl.setAttribute('aria-expanded','true'); }
+        function close(){ menuEl.classList.add('hidden');   btnEl.setAttribute('aria-expanded','false'); }
 
-    // inicialização do rótulo
-    const initial = (localStorage.getItem(KEY) || 'system');
-    setButtonLabel(initial);
+        btnEl.addEventListener('click', () => {
+        menuEl.classList.contains('hidden') ? open() : close();
+        });
+
+        menuEl.addEventListener('click', (e) => {
+        const li = e.target.closest('[data-mode]');
+        if (!li) return;
+        const mode = li.getAttribute('data-mode');
+        applyMode(mode);
+        setBtnLabel(btnEl, mode);
+        close();
+        });
+
+        document.addEventListener('click', (e) => {
+        if (!menuEl.contains(e.target) && !btnEl.contains(e.target)) close();
+        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    });
     })();

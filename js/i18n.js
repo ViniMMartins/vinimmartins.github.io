@@ -43,6 +43,7 @@ const i18n = {
         'mode.dark': 'Dark Mode',
         'mode.system': 'System Mode',
         'label.language': 'Language',
+        'label.theme': 'Theme'
     },
     pt: {
         'meta.title': 'Vinicius Martins Resumo',
@@ -84,7 +85,8 @@ const i18n = {
         'mode.light': 'Tema Claro',
         'mode.dark': 'Tema Escuro',
         'mode.system': 'Tema do Sistema',
-        'label.language': 'Idioma'
+        'label.language': 'Idioma',
+        'label.theme': 'Tema'
     }
 };
 
