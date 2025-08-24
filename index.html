@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- i18n-controlled -->
-    <title id="meta-title">Vinicius M. Martins — RPA & Software</title>
+    <title id="meta-title">Vinicius Martins Resume</title>
     <meta id="meta-description" name="description" content="Senior Automation Developer at Practia Global" />
     <meta property="og:title" content="Vinicius M. Martins — RPA & Software" />
     <meta property="og:description" content="Senior Automation Developer at Practia Global" />
@@ -14,64 +14,17 @@
     <meta property="og:image" content="https://vinimmartins.github.io/assets/profile.png" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
 
-    <!-- THEME (aplica cedo para evitar FOUC) -->
-    <script>
-        (function () {
-        const stored = localStorage.getItem('theme'); // 'dark' | 'light' | null
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const mode = stored || (prefersDark ? 'dark' : 'light');
-        document.documentElement.classList.toggle('dark', mode === 'dark');
-        })();
-    </script>
+    <!-- 1) Aplica o tema o mais cedo possível (SEM seguir o SO) -->
+    <script src="js/theme-early.js"></script>
 
-    <!-- Tailwind: usar dark por classe (no window, antes do CDN) -->
-    <script>
-        window.tailwind = { config: { darkMode: 'class' } };
-    </script>
+    <!-- 2) Define darkMode:'class' antes do CDN do Tailwind -->
+    <script src="js/tailwind-config.js"></script>
+
+    <!-- 3) Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- THEME (liga o botão quando o DOM estiver pronto) -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const themeBtn = document.getElementById('theme-toggle');
-        if (!themeBtn) return;
-
-        function setTheme(mode) {
-            const isDark = mode === 'dark';
-            document.documentElement.classList.toggle('dark', isDark);
-            localStorage.setItem('theme', mode);
-            themeBtn.textContent = isDark ? '☀️' : '🌙';
-            themeBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-            themeBtn.title = themeBtn.getAttribute('aria-label');
-        }
-
-        // sincroniza o estado do botão com o tema atual
-        const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-        themeBtn.textContent = current === 'dark' ? '☀️' : '🌙';
-        themeBtn.setAttribute('aria-label', current === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-        themeBtn.title = themeBtn.getAttribute('aria-label');
-        if (!localStorage.getItem('theme')) localStorage.setItem('theme', current);
-
-        // alterna no clique
-        themeBtn.addEventListener('click', () => {
-            const now = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-            setTheme(now === 'dark' ? 'light' : 'dark');
-        });
-
-        // se o usuário NÃO escolheu manualmente, segue a mudança do sistema
-        const media = window.matchMedia('(prefers-color-scheme: dark)');
-        media.addEventListener('change', (e) => {
-            if (!localStorage.getItem('theme')) {
-            setTheme(e.matches ? 'dark' : 'light');
-            }
-        });
-
-        // helpers no console (opcional)
-        window.setTheme = setTheme;
-        window.setDark = () => setTheme('dark');
-        window.setLight = () => setTheme('light');
-        });
-    </script>
+    <!-- 4) Seu CSS opcional -->
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body class="bg-white text-slate-800 dark:bg-slate-950 dark:text-slate-100">
@@ -247,125 +200,8 @@
         </div>
     </section>
 
-    <!-- Scripts -->
-    <script>
-        // I18N DICTIONARY
-        const i18n = {
-        en: {
-            'meta.title': 'Vinicius M. Martins — RPA & Software',
-            'meta.description': 'Senior Automation Developer at Practia Global',
-            'nav.resume': 'Resume',
-            'nav.about': 'About',
-            'nav.work': 'Work',
-            'nav.projects': 'Projects',
-            'nav.cv': 'CV',
-            'nav.contact': 'Contact',
-            'hero.subtitle': 'Senior Automation Developer at Practia Global',
-            'hero.ctaProjects': 'Projects',
-            'hero.ctaContact': 'Talk to me',
-            'about.title': 'About',
-            'about.body': `Since the beginning of my career, I have been drawn to technology and how it can be used to drive innovation and transformation. As a Developer, I have the opportunity to apply my passion in my daily profession, working on projects that involve automation, development, and process improvement.<br><br>My career path is marked by extensive experience working with multidisciplinary teams, always aiming to achieve the best results through clear and effective communication. Working on different projects has allowed me to develop collaborative skills and adaptability to work with various profiles of people and contexts, always aiming for the delivery of excellent work.<br><br>With a Bachelor’s degree in Computer Science and technical training in Computer Networks, I have been in contact with technology from an early age. Since 2013, I have worked with resources and technologies in various areas, including Programming and Development, Operating Systems, Projects, among others.<br><br>I have also participated in Programming Marathons (Hackathons) in the past, including the Hackathon - Code of Law and the HackMED - Conference and Health Hackathon, where I had the opportunity to work as a team and develop technological solutions to real problems. These were valuable experiences that allowed me to learn and develop skills in problem-solving and teamwork.`,
-            'works.title': 'Works',
-            'works.practia.role': 'Automation Developer',
-            'works.practia.period': '2021 — Currently',
-            'works.practia.desc': 'Responsible for complex automations: robust, scalable and integrated solutions. Experience in process architecture, workflow optimization, technical docs (PDD/SDD), and practices that ensure efficiency on-prem and in the cloud.',
-            'works.practia.stack': 'Stack: Python, BotCity, Automation Anywhere, UiPath, Process Improvement and Microsoft Platform',
-            'works.practia.siteLabel': 'Practia Global Website',
-            'works.deloitte.role': 'Business Analyst',
-            'works.deloitte.period': '2018 — 2021',
-            'works.deloitte.desc': 'Analysis, development and optimization of automated solutions, ensuring efficiency and error reduction. Requirements gathering, process mapping, and technical docs (PDD/SDD) to ensure accurate automation implementation.',
-            'works.deloitte.stack': 'Stack: Automation Anywhere, UiPath and Process Improvement',
-            'works.deloitte.siteLabel': 'Deloitte Website',
-            'projects.title': 'Featured Personal Projects',
-            'projects.compraFacil.badge': 'Ongoing project',
-            'projects.compraFacil.desc': 'Home system for purchase and stock control with 2D reader (QR/EAN). Built with Flask + SQLite, lookup in Open Food Facts.',
-            'projects.code': 'Code',
-            'projects.docs': 'Docs',
-            'cv.lead': 'Access my complete CV through the link below:',
-            'cv.openEn': 'Open CV (EN)',
-            'cv.downloadEn': 'Download CV (EN)',
-            'cv.openPt': 'Open CV (PT)',
-            'cv.downloadPt': 'Download CV (PT)',
-            'contact.title': 'Contact',
-            'contact.emailLabel': 'Email:'
-        },
-        pt: {
-            'meta.title': 'Vinicius M. Martins — RPA & Software',
-            'meta.description': 'Desenvolvedor Sênior de Automação na Practia Global',
-            'nav.resume': 'Resumo',
-            'nav.about': 'Sobre',
-            'nav.work': 'Trabalhos',
-            'nav.projects': 'Projetos',
-            'nav.cv': 'CV',
-            'nav.contact': 'Contato',
-            'hero.subtitle': 'Desenvolvedor Sênior de Automação na Practia Global',
-            'hero.ctaProjects': 'Projetos',
-            'hero.ctaContact': 'Fale comigo',
-            'about.title': 'Sobre',
-            'about.body': `Desde o início da minha carreira, fui atraído pela tecnologia e como ela pode ser usada para impulsionar a inovação e a transformar. Como Desenvolvedor, tenho a oportunidade de aplicar minha paixão em minha profissão diariamente, trabalhando em projetos que envolvem automação, desenvolvimento e melhoria de processos.<br><br>Minha trajetória profissional é marcada por uma ampla experiência em trabalhar com equipes multidisciplinares, sempre buscando alcançar os melhores resultados por meio de uma comunicação clara e eficaz. Atuar em diferentes projetos me permitiu desenvolver habilidades colaborativas e adaptabilidade para trabalhar com diferentes perfis de pessoas e contextos, visando sempre a entrega de um trabalho de excelência.<br><br>Bacharel em Ciência da Computação e com formação técnica em Rede de Computadores, tive contanto com tecnologia desde muito cedo. Desde 2013, tenho trabalhado com recursos e tecnologias em diversas áreas, incluindo Programação e Desenvolvimento, Sistemas Operacionais, Projetos, entre outras.<br><br>Também participei de Maratonas de Programação (Hackathons) no passado, incluindo o Hackathon - Code of Law e o HackMED - Conference and Health Hackathon, onde tive a oportunidade de trabalhar em equipe e desenvolver soluções tecnológicas para problemas reais. Foram experiências valiosas que me permitiram aprender e desenvolver habilidades em resolução de problemas e trabalho em equipe.`,
-            'works.title': 'Experiências Profissionais',
-            'works.practia.role': 'Desenvolvedor de Automação',
-            'works.practia.period': '2021 — Atual',
-            'works.practia.desc': 'Responsável por automações complexas: soluções robustas, escaláveis e integradas. Atuação em arquitetura de processos, otimização de fluxos, documentação técnica (PDD/SDD) e práticas de eficiência on-premise e cloud.',
-            'works.practia.stack': 'Stack: Python, BotCity, Automation Anywhere, UiPath, Melhoria de Processos e Microsoft Platform',
-            'works.practia.siteLabel': 'Site da Practia Global',
-            'works.deloitte.role': 'Analista de Negócios',
-            'works.deloitte.period': '2018 — 2021',
-            'works.deloitte.desc': 'Análise, desenvolvimento e otimização de soluções automatizadas, garantindo eficiência e redução de erros. Levantamento de requisitos, mapeamento de processos e documentação técnica (PDD/SDD) para implementação assertiva.',
-            'works.deloitte.stack': 'Stack: Automation Anywhere, UiPath e Melhoria de Processos',
-            'works.deloitte.siteLabel': 'Site da Deloitte',
-            'projects.title': 'Projetos Pessoais em Destaque',
-            'projects.compraFacil.badge': 'Em andamento',
-            'projects.compraFacil.desc': 'Sistema doméstico de compras e controle de estoque com leitor 2D (QR/EAN). Feito com Flask + SQLite e consulta ao Open Food Facts.',
-            'projects.code': 'Código',
-            'projects.docs': 'Documentação',
-            'cv.lead': 'Acesse meu CV completo abaixo:',
-            'cv.openEn': 'Abrir CV (EN)',
-            'cv.downloadEn': 'Baixar CV (EN)',
-            'cv.openPt': 'Abrir CV (PT)',
-            'cv.downloadPt': 'Baixar CV (PT)',
-            'contact.title': 'Contato',
-            'contact.emailLabel': 'E-mail:'
-        }
-        };
-
-        function applyI18n(lang) {
-        const dict = i18n[lang] || i18n.en;
-
-        // Basic meta
-        document.documentElement.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
-        document.getElementById('meta-title').textContent = dict['meta.title'];
-        document.getElementById('meta-description').setAttribute('content', dict['meta.description']);
-
-        // All [data-i18n] nodes
-        document.querySelectorAll('[data-i18n]').forEach(node => {
-            const key = node.getAttribute('data-i18n');
-            if (!dict[key]) return;
-            if (key === 'about.body') {
-            node.innerHTML = dict[key]; // aceita <br>
-            } else {
-            node.textContent = dict[key];
-            }
-        });
-
-        // Update lang toggle label
-        const btn = document.getElementById('lang-toggle');
-        btn.textContent = lang === 'pt' ? 'PT' : 'EN';
-        btn.setAttribute('aria-label', lang === 'pt' ? 'Mudar para Inglês' : 'Switch to Portuguese');
-        btn.title = btn.getAttribute('aria-label');
-
-        localStorage.setItem('lang', lang);
-        }
-
-        const langBtn = document.getElementById('lang-toggle');
-        (function initLang(){
-        const stored = localStorage.getItem('lang') || ((navigator.language || '').toLowerCase().startsWith('pt') ? 'pt' : 'en');
-        applyI18n(stored);
-        })();
-        langBtn.addEventListener('click', () => {
-        const current = localStorage.getItem('lang') || 'en';
-        applyI18n(current === 'en' ? 'pt' : 'en');
-        });
-    </script>
+    <!-- Scripts (defer para esperar o DOM) -->
+    <script src="js/theme-init.js" defer></script>
+    <script src="js/i18n.js" defer></script>
 </body>
 </html>
