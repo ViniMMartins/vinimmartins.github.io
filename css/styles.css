@@ -1,0 +1,82 @@
+/* Acessibilidade: foco visível consistente */
+:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+/* Exemplo: suavizar a borda dos chips (além do Tailwind) */
+.rounded-full {
+    border-radius: 9999px;
+}
+
+/* -------- Color scheme global (nativo do navegador) -------- */
+
+/* Padrão: claro */
+html { color-scheme: light; }
+
+/* Seguir o sistema quando NÃO houver atributo (modo "system") */
+@media (prefers-color-scheme: dark) {
+    html:not([data-color-mode]) { color-scheme: dark; }
+}
+
+/* Forçar modos via atributo (controlado pelo JS) */
+html[data-color-mode="light"] { color-scheme: light; }
+html[data-color-mode="dark"]  { color-scheme: dark; }
+
+/* -------- Controles no header (select e botão de idioma) -------- */
+
+/* Mantém visual translúcido do header:
+   controles "fechados" ficam transparentes e herdam a cor */
+#mode-select,
+#lang-toggle {
+    background-color: transparent;
+    color: inherit;
+    border-color: color-mix(in oklab, currentColor 30%, transparent);
+}
+
+/* Aparência no foco (sem outline duplicado do navegador) */
+#mode-select:focus,
+#lang-toggle:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in oklab, currentColor 50%, transparent);
+    border-color: currentColor;
+}
+
+/* Ajusta o popup nativo do <select> para combinar com o tema atual */
+html.dark #mode-select,
+html[data-color-mode="dark"] #mode-select {
+  color-scheme: dark;   /* menu suspenso escuro */
+}
+
+html:not(.dark):not([data-color-mode="dark"]) #mode-select {
+  color-scheme: light;  /* menu suspenso claro */
+}
+
+/* menu do picker acompanha o tema */
+html.dark #mode-menu { color-scheme: dark; }
+
+/* Idioma: manter o controle fechado translúcido e o popup coerente com o tema */
+#lang-select {
+    background-color: transparent;
+    color: inherit;
+    border-color: color-mix(in oklab, currentColor 30%, transparent);
+}
+
+#lang-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in oklab, currentColor 50%, transparent);
+    border-color: currentColor;
+}
+
+/* Dizer ao navegador qual esquema usar para o MENU do select */
+html.dark #lang-select,
+html[data-color-mode="dark"] #lang-select {
+  color-scheme: dark;   /* popup escuro */
+}
+
+html:not(.dark):not([data-color-mode="dark"]) #lang-select {
+  color-scheme: light;  /* popup claro */
+}
+
+/* garante que o menu do idioma acompanhe o tema */
+html.dark #lang-menu { color-scheme: dark; }

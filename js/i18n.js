@@ -33,12 +33,16 @@ const i18n = {
         'projects.code': 'Code',
         'projects.docs': 'Docs',
         'cv.lead': 'Access my complete CV through the link below:',
-        'cv.openEn': 'Open CV (EN)',
-        'cv.downloadEn': 'Download CV (EN)',
-        'cv.openPt': 'Open CV (PT)',
-        'cv.downloadPt': 'Download CV (PT)',
+        'cv.openEn': 'Open CV (EN-US)',
+        'cv.downloadEn': 'Download CV (EN-US)',
+        'cv.openPt': 'Open CV (PT-BR)',
+        'cv.downloadPt': 'Download CV (PT-BR)',
         'contact.title': 'Contact',
-        'contact.emailLabel': 'Email:'
+        'contact.emailLabel': 'Email:',
+        'mode.light': 'Light Mode',
+        'mode.dark': 'Dark Mode',
+        'mode.system': 'System Mode',
+        'label.language': 'Language',
     },
     pt: {
         'meta.title': 'Vinicius Martins Resumo',
@@ -71,16 +75,20 @@ const i18n = {
         'projects.code': 'Código',
         'projects.docs': 'Documentação',
         'cv.lead': 'Acesse meu CV completo abaixo:',
-        'cv.openEn': 'Abrir CV (EN)',
-        'cv.downloadEn': 'Baixar CV (EN)',
-        'cv.openPt': 'Abrir CV (PT)',
-        'cv.downloadPt': 'Baixar CV (PT)',
+        'cv.openEn': 'Abrir CV (EN-US)',
+        'cv.downloadEn': 'Baixar CV (EN-US)',
+        'cv.openPt': 'Abrir CV (PT-BR)',
+        'cv.downloadPt': 'Baixar CV (PT-BR)',
         'contact.title': 'Contato',
-        'contact.emailLabel': 'E-mail:'
+        'contact.emailLabel': 'E-mail:',
+        'mode.light': 'Tema Claro',
+        'mode.dark': 'Tema Escuro',
+        'mode.system': 'Tema do Sistema',
+        'label.language': 'Idioma'
     }
-    };
+};
 
-    function applyI18n(lang) {
+function applyI18n(lang) {
     const dict = i18n[lang] || i18n.en;
 
     // Basic meta
@@ -95,33 +103,33 @@ const i18n = {
         const key = node.getAttribute('data-i18n');
         if (!dict[key]) return;
         if (key === 'about.body') {
-        node.innerHTML = dict[key]; // aceita <br>
+            node.innerHTML = dict[key]; // aceita <br>
         } else {
-        node.textContent = dict[key];
+            node.textContent = dict[key];
         }
     });
 
     // Update lang toggle label
     const btn = document.getElementById('lang-toggle');
     if (btn) {
-        btn.textContent = lang === 'pt' ? 'PT' : 'EN';
+        btn.textContent = lang === 'pt' ? 'Idioma - PT (BR)' : 'Language - EN (US)';
         btn.setAttribute('aria-label', lang === 'pt' ? 'Mudar para Inglês' : 'Switch to Portuguese');
         btn.title = btn.getAttribute('aria-label');
     }
 
     try { localStorage.setItem('lang', lang); } catch (_) {}
-    }
+}
 
-    (function initLang() {
+(function initLang() {
     // define idioma inicial (localStorage > navegador)
     let stored = 'en';
     try {
         stored = localStorage.getItem('lang') || ((navigator.language || '').toLowerCase().startsWith('pt') ? 'pt' : 'en');
     } catch (_) {}
     applyI18n(stored);
-    })();
+})();
 
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const langBtn = document.getElementById('lang-toggle');
     if (!langBtn) return;
     langBtn.addEventListener('click', () => {
@@ -130,3 +138,4 @@ const i18n = {
         applyI18n(current === 'en' ? 'pt' : 'en');
     });
 });
+

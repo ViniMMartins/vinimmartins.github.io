@@ -12,19 +12,23 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://vinimmartins.github.io" />
     <meta property="og:image" content="https://vinimmartins.github.io/assets/profile.png" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
 
-    <!-- 1) Aplica o tema o mais cedo possível (SEM seguir o SO) -->
+    <!-- aplica o tema cedo -->
     <script src="js/theme-early.js"></script>
 
-    <!-- 2) Define darkMode:'class' antes do CDN do Tailwind -->
-    <script src="js/tailwind-config.js"></script>
-
-    <!-- 3) Tailwind CDN -->
+    <!-- CDN do Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- 4) Seu CSS opcional -->
+    <!-- CONFIG do Tailwind (DEPOIS do CDN) -->
+    <script>
+        // isso precisa rodar após o CDN
+        tailwind.config = { darkMode: 'class' };
+    </script>
+
     <link rel="stylesheet" href="css/styles.css" />
+
+
 </head>
 
 <body class="bg-white text-slate-800 dark:bg-slate-950 dark:text-slate-100">
@@ -42,17 +46,67 @@
             <a href="#contact" class="hover:underline" data-i18n="nav.contact">Contact</a>
             </div>
 
-            <!-- Theme toggle -->
-            <button id="theme-toggle"
-                    class="ml-2 rounded-xl border px-3 py-1 text-sm"
-                    aria-label="Toggle dark mode"
-                    title="Toggle dark mode">🌙</button>
+            <!-- Theme picker (custom dropdown) -->
+            <div id="mode-picker" class="relative">
+            <button id="mode-btn"
+                    class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
+                            border-slate-300 dark:border-slate-600
+                            focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+                    aria-haspopup="listbox" aria-expanded="false">
+                🌙 Tema Escuro
+            </button>
 
-            <!-- Lang toggle -->
-            <button id="lang-toggle"
-                    class="rounded-xl border px-3 py-1 text-sm"
-                    aria-label="Switch language"
-                    title="Switch language">EN</button>
+            <!-- menu -->
+            <ul id="mode-menu"
+                class="absolute right-0 mt-2 w-48 rounded-xl border bg-white/95 dark:bg-slate-900/95
+                        backdrop-blur shadow-lg border-slate-200 dark:border-slate-700
+                        hidden"
+                role="listbox" aria-labelledby="mode-btn">
+                <li role="option" data-mode="light"
+                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center gap-2">
+                <span>☀️</span><span data-i18n="mode.light">Light Mode</span>
+                </li>
+                <li role="option" data-mode="dark"
+                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center gap-2">
+                <span>🌙</span><span data-i18n="mode.dark">Dark Mode<</span>
+                </li>
+                <li role="option" data-mode="system"
+                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center gap-2">
+                <span>💻</span><span data-i18n="mode.system">System Mode</span>
+                </li>
+            </ul>
+            </div>
+
+            <!-- Language picker -->
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-medium" data-i18n="label.language">Idioma</span>
+
+            <div id="lang-picker" class="relative">
+                <button id="lang-btn"
+                        class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
+                            border-slate-300 dark:border-slate-600
+                            focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+                        aria-haspopup="listbox" aria-expanded="false">
+                EN (US)
+                </button>
+
+                <ul id="lang-menu"
+                    class="absolute right-0 mt-2 w-36 rounded-xl border bg-white/95 dark:bg-slate-900/95
+                        backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
+                    role="listbox" aria-labelledby="lang-btn">
+                <li role="option" data-lang="en"
+                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    EN (US)
+                </li>
+                <li role="option" data-lang="pt"
+                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    PT (BR)
+                </li>
+                </ul>
+            </div>
+            </div>
+
+
         </div>
         </nav>
     </header>
@@ -203,5 +257,10 @@
     <!-- Scripts (defer para esperar o DOM) -->
     <script src="js/theme-init.js" defer></script>
     <script src="js/i18n.js" defer></script>
+    <script src="js/mode-controller.js" defer></script>
+    <script src="js/mode-picker.js" defer></script>
+    <script src="js/lang-picker.js" defer></script>
+
+
 </body>
 </html>
