@@ -1,51 +1,71 @@
-// js/lang-picker.js
-(function initLangPicker() {
-    const KEY = 'lang';
-    const defs = [
-        { btn: 'lang-btn', menu: 'lang-menu' },
-        { btn: 'lang-btn-mobile', menu: 'lang-menu-mobile' }, // <--- mobile incluído
-    ];
+// =====================
+// lang-picker.js
+// Controla UI dos botões de idioma (desktop e mobile)
+// =====================
 
-    function getSaved() {
-        try {
-        return localStorage.getItem(KEY) ||
-                ((navigator.language || '').toLowerCase().startsWith('pt') ? 'pt' : 'en');
-        } catch { return 'en'; }
-    }
+'use strict';
 
-    function setBtnLabel(btnEl, lang) {
-        btnEl.textContent = lang === 'pt' ? 'PT (BR)' : 'EN (US)';
-    }
+document.addEventListener('DOMContentLoaded', function () {
+const KEY = 'lang';
+const pickers = [
+    { btn: 'lang-btn',         menu: 'lang-menu' },
+    { btn: 'lang-btn-mobile',  menu: 'lang-menu-mobile' }
+];
 
-    defs.forEach(({ btn, menu }) => {
-        const btnEl = document.getElementById(btn);
-        const menuEl = document.getElementById(menu);
-        if (!btnEl || !menuEl) return;
+function getSaved() {
+    try {
+    return localStorage.getItem(KEY) ||
+            ((navigator.language || '').toLowerCase().startsWith('pt') ? 'pt' : 'en');
+    } catch { return 'en'; }
+}
 
-        const initial = getSaved();
-        setBtnLabel(btnEl, initial);
-        if (typeof window.applyI18n === 'function') window.applyI18n(initial);
+const setBtn = (el, lang) => { if (el) el.textContent = lang === 'pt' ? 'PT (BR)' : 'EN (US)'; };
 
-        function open() { menuEl.classList.remove('hidden'); btnEl.setAttribute('aria-expanded','true'); }
-        function close(){ menuEl.classList.add('hidden');   btnEl.setAttribute('aria-expanded','false'); }
+function setup({ btn: btnId, menu: menuId }) {
+    const btn  = document.getElementById(btnId);
+    const menu = document.getElementById(menuId);
+    if (!btn || !menu) return;
 
-        btnEl.addEventListener('click', () => {
-        menuEl.classList.contains('hidden') ? open() : close();
-        });
+    // estado inicial
+    const initial = getSaved();
+    setBtn(btn, initial);
+    if (typeof window.applyI18n === 'function') window.applyI18n(initial);
 
-        menuEl.addEventListener('click', (e) => {
-        const li = e.target.closest('[data-lang]');
-        if (!li) return;
-        const lang = li.getAttribute('data-lang');
-        try { localStorage.setItem(KEY, lang); } catch {}
-        setBtnLabel(btnEl, lang);
-        if (typeof window.applyI18n === 'function') window.applyI18n(lang);
-        close();
-        });
-
-        document.addEventListener('click', (e) => {
-        if (!menuEl.contains(e.target) && !btnEl.contains(e.target)) close();
-        });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    // abre/fecha
+    btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', menu.classList.contains('hidden') ? 'false' : 'true');
     });
-})();
+
+    // seleção por delegação
+    menu.addEventListener('click', (e) => {
+    const li = e.target.closest('[data-lang]');
+    if (!li) return;
+    const lang = li.getAttribute('data-lang');
+    try { localStorage.setItem(KEY, lang); } catch {}
+    if (typeof window.applyI18n === 'function') window.applyI18n(lang);
+    setBtn(btn, lang);
+    menu.classList.add('hidden');
+    btn.setAttribute('aria-expanded', 'false');
+    });
+
+    // fecha fora
+    document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+    }
+    });
+
+    // fecha com ESC
+    document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+    }
+    });
+}
+
+pickers.forEach(setup);
+});

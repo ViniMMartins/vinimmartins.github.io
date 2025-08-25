@@ -1,25 +1,45 @@
-/* Aplica tema inicial antes do carregamento do Tailwind
-    -> Usa a mesma chave do mode-controller.js: 'color-mode'
-    -> Default: 'system' (segue preferências do SO até o usuário escolher) */
-
+/* =========================================
+js/theme-early.js
+Aplica o tema o mais cedo possível,
+evitando FOUC e respeitando:
+- color-mode: 'light' | 'dark' | 'system'
+========================================= */
 (function () {
-    try {
-        const stored = localStorage.getItem('color-mode'); // 'light' | 'dark' | 'system'
-        const mode = stored || 'system';  // <-- default sempre "system"
+try {
+    const html = document.documentElement;
 
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = mode === 'dark' || (mode === 'system' && prefersDark);
-
-        document.documentElement.classList.toggle('dark', isDark);
-
-        if (mode === 'system') {
-        document.documentElement.removeAttribute('data-color-mode');
-        } else {
-        document.documentElement.setAttribute('data-color-mode', mode);
-        }
-    } catch {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.setAttribute('data-color-mode', 'system');
+    // Migração: compat com chave antiga 'theme' (light/dark)
+    let saved = localStorage.getItem('color-mode');
+    if (!saved) {
+    const legacy = localStorage.getItem('theme'); // 'light' | 'dark'
+    if (legacy === 'light' || legacy === 'dark') {
+        saved = legacy;
+        localStorage.setItem('color-mode', saved);
     }
-})();
+    }
+    if (!saved) saved = 'system';
 
+    // Aplica atributo data-color-mode e classe .dark (Tailwind)
+    function applyEarly(mode) {
+    if (mode === 'system') {
+        html.removeAttribute('data-color-mode');
+        const prefersDark = window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+        html.classList.toggle('dark', !!prefersDark);
+    } else if (mode === 'dark') {
+        html.setAttribute('data-color-mode', 'dark');
+        html.classList.add('dark');
+    } else {
+        // light
+        html.setAttribute('data-color-mode', 'light');
+        html.classList.remove('dark');
+    }
+    }
+
+    applyEarly(saved);
+} catch {
+    // Fallback seguro: modo claro
+    document.documentElement.classList.remove('dark');
+    document.documentElement.setAttribute('data-color-mode', 'light');
+}
+})();

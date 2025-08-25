@@ -1,58 +1,70 @@
-// js/mode-controller.js
+// =====================
+// mode-controller.js
+// Controla o "color-mode": 'light' | 'dark' | 'system'
+// - Aplica atributo data-color-mode
+// - Gerencia classe .dark (Tailwind)
+// - Reage a mudanças do SO quando em 'system'
+// - Expõe window.setColorMode(mode)
+// =====================
+
 (function () {
-    const KEY = 'color-mode'; // valores: 'light' | 'dark' | 'system'
-    const html = document.documentElement;
-    const select = document.getElementById('mode-select');
+'use strict';
 
-    // aplica a classe 'dark' (Tailwind) e o atributo data-color-mode
-    function apply(mode) {
-        // atributo para CSS nativo (color-scheme)
-        if (mode === 'system') {
-            html.removeAttribute('data-color-mode');
-        } else {
-            html.setAttribute('data-color-mode', mode);
-        }
+const KEY = 'color-mode';
+const html = document.documentElement;
+const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
-        // classe 'dark' do Tailwind
-        const prefersDark = window.matchMedia &&
-                            window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = mode === 'dark' || (mode === 'system' && prefersDark);
-        html.classList.toggle('dark', isDark);
+function computeIsDark(mode) {
+    if (mode === 'dark') return true;
+    if (mode === 'light') return false;
+    // system
+    return media ? media.matches : false;
+}
+
+function apply(mode) {
+    // atributo para CSS nativo (color-scheme em core.css)
+    if (mode === 'system') {
+    html.removeAttribute('data-color-mode');
+    } else {
+    html.setAttribute('data-color-mode', mode);
     }
 
-    // inicialização (pega do localStorage ou default = system)
-    let saved = 'system'; // força system como default SEMPRE
-    apply(saved);
-    localStorage.setItem(KEY, saved);
+    // classe 'dark' do Tailwind
+    html.classList.toggle('dark', computeIsDark(mode));
+}
 
+function getSaved() {
+    try { return localStorage.getItem(KEY) || 'system'; }
+    catch { return 'system'; }
+}
 
-    // sincroniza UI do <select>
-    if (select) select.value = saved;
+function setSaved(mode) {
+    try { localStorage.setItem(KEY, mode); } catch {}
+}
 
-    // troca manual via select
-    if (select) {
-        select.addEventListener('change', () => {
-            saved = select.value; // 'light' | 'dark' | 'system'
-            localStorage.setItem(KEY, saved);
-            apply(saved);
-        });
-    }
+// API pública para outros scripts (ex.: pickers)
+function setColorMode(mode) {
+    if (mode !== 'light' && mode !== 'dark' && mode !== 'system') mode = 'system';
+    setSaved(mode);
+    apply(mode);
+}
+window.setColorMode = setColorMode;
 
-    // se estiver em 'system', reagir a mudanças do SO
-    const media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-    if (media && media.addEventListener) {
-        media.addEventListener('change', () => {
-            const current = localStorage.getItem(KEY) || 'system';
-            if (current === 'system') {
-                apply('system'); // reavalia preferências
-            }
-        });
-    }
+// Inicializa com o valor salvo (theme-early.js já aplicou cedo; aqui confirmamos/fortalecemos)
+const initial = getSaved();
+apply(initial);
 
-    // helpers no console (opcional)
-    window.setColorMode = (m) => {
-        localStorage.setItem(KEY, m);
-        apply(m);
-        if (select) select.value = m;
-    };
+// Se estiver em 'system', reagir a mudanças do SO
+if (media && media.addEventListener) {
+    media.addEventListener('change', () => {
+    const current = getSaved();
+    if (current === 'system') apply('system');
+    });
+} else if (media && media.addListener) {
+    // Safari antigo
+    media.addListener(() => {
+    const current = getSaved();
+    if (current === 'system') apply('system');
+    });
+}
 })();

@@ -1,0 +1,38 @@
+/* =====================
+DESKTOP.CSS
+===================== */
+
+/* Header */
+header nav {
+display: flex;
+flex-direction: column;
+}
+
+/* Links da navbar no desktop */
+@media (min-width: 640px) {
+nav > div > .flex.gap-5 a {
+    font-size: 0.875rem; /* text-sm */
+}
+}
+
+/* Cards (works/projects) */
+@media (min-width: 640px) {
+#works article,
+#projects article {
+    padding: 1.5rem; /* p-6 */
+}
+}
+
+/* Botões de CV no desktop (grade de 2 colunas) */
+@media (min-width: 640px) {
+#cv .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+}
+
+/* Hero tags (tecnologias) no desktop */
+@media (min-width: 640px) {
+#hero-tags span {
+    font-size: 0.875rem;
+}
+}

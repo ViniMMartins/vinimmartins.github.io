@@ -1,44 +1,39 @@
-    // js/mobile-menu.js
-    (function () {
-    const btn = document.getElementById('mobile-menu-toggle');
-    const panel = document.getElementById('mobile-menu');
-    if (!btn || !panel) return;
+// =====================
+// mobile-menu.js
+// =====================
 
-    function open() {
-        panel.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-        document.body.style.overflowY = 'hidden'; // evita scroll do fundo
-    }
-    function close() {
-        panel.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-        document.body.style.overflowY = '';
-    }
+'use strict';
 
-    btn.addEventListener('click', () => {
-        const isOpen = !panel.classList.contains('hidden');
-        isOpen ? close() : open();
-    });
+document.addEventListener('DOMContentLoaded', function () {
+const btn = document.getElementById('mobile-menu-toggle');
+const menu = document.getElementById('mobile-menu');
 
-    // fecha ao clicar em link do menu
-    panel.addEventListener('click', (e) => {
-        const a = e.target.closest('a[href^="#"]');
-        if (a) close();
-    });
+if (!btn || !menu) return;
 
-    // fecha com ESC
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') close();
-    });
+function open() {
+    menu.classList.remove('hidden');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden'; // evita scroll do fundo
+}
 
-    // fecha ao mudar tema/idioma pelo dropdown
-    ['mode-menu-mobile', 'lang-menu-mobile'].forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.addEventListener('click', (e) => {
-        if (e.target.closest('[data-mode]') || e.target.closest('[data-lang]')) {
-            setTimeout(close, 0);
-        }
-        });
-    });
-    })();
+function close() {
+    menu.classList.add('hidden');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+}
+
+// Alterna abrir/fechar
+btn.addEventListener('click', () => {
+    menu.classList.contains('hidden') ? open() : close();
+});
+
+// Fecha ao clicar em link dentro do menu
+menu.addEventListener('click', (e) => {
+    if (e.target.closest('a[href^="#"]')) close();
+});
+
+// Fecha com tecla ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+});
+});

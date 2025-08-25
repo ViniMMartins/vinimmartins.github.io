@@ -1,68 +1,69 @@
-    // js/mode-picker.js
-    (function initThemePicker() {
-    const KEY = 'color-mode';
-    const defs = [
-        { btn: 'mode-btn', menu: 'mode-menu' },
-        { btn: 'mode-btn-mobile', menu: 'mode-menu-mobile' },
-    ];
+// =====================
+// mode-picker.js
+// Controla UI dos botões de tema (desktop e mobile)
+// =====================
 
-    function getSaved() {
-        try { return localStorage.getItem(KEY) || 'system'; } catch { return 'system'; }
-    }
-    const labels = {
-        light: { icon: '☀️', pt: 'Tema Claro', en: 'Light Mode' },
-        dark:  { icon: '🌙', pt: 'Tema Escuro', en: 'Dark Mode' },
-        system:{ icon: '💻', pt: 'Tema do Sistema', en: 'System Mode' },
-    };
-    const lang = (() => { try { return localStorage.getItem('lang') || 'en'; } catch { return 'en'; } })();
+'use strict';
 
-    function setBtnLabel(btnEl, mode) {
-        const t = labels[mode] || labels.system;
-        btnEl.textContent = `${t.icon} ${lang === 'pt' ? t.pt : t.en}`;
-    }
+document.addEventListener('DOMContentLoaded', function () {
+const KEY = 'color-mode';
+const pickers = [
+    { btn: 'mode-btn',         menu: 'mode-menu' },
+    { btn: 'mode-btn-mobile',  menu: 'mode-menu-mobile' }
+];
 
-    function applyMode(mode) {
-        if (typeof window.setColorMode === 'function') {
-        window.setColorMode(mode);
-        } else {
-        try { localStorage.setItem(KEY, mode); } catch {}
-        const html = document.documentElement;
-        const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = mode === 'dark' || (mode === 'system' && prefers);
-        html.classList.toggle('dark', isDark);
-        if (mode === 'system') html.removeAttribute('data-color-mode');
-        else html.setAttribute('data-color-mode', mode);
-        }
-    }
+const getSaved = () => {
+    try { return localStorage.getItem(KEY) || 'system'; }
+    catch { return 'system'; }
+};
 
-    defs.forEach(({ btn, menu }) => {
-        const btnEl = document.getElementById(btn);
-        const menuEl = document.getElementById(menu);
-        if (!btnEl || !menuEl) return;
+const labelFor = (mode) =>
+    mode === 'light' ? '☀️ Light' :
+    mode === 'dark'  ? '🌙 Dark'  : '💻 System';
 
-        // estado inicial
-        const initial = getSaved();
-        setBtnLabel(btnEl, initial);
+function setup({ btn: btnId, menu: menuId }) {
+    const btn  = document.getElementById(btnId);
+    const menu = document.getElementById(menuId);
+    if (!btn || !menu) return;
 
-        function open() { menuEl.classList.remove('hidden'); btnEl.setAttribute('aria-expanded','true'); }
-        function close(){ menuEl.classList.add('hidden');   btnEl.setAttribute('aria-expanded','false'); }
+    // estado inicial
+    btn.textContent = labelFor(getSaved());
 
-        btnEl.addEventListener('click', () => {
-        menuEl.classList.contains('hidden') ? open() : close();
-        });
-
-        menuEl.addEventListener('click', (e) => {
-        const li = e.target.closest('[data-mode]');
-        if (!li) return;
-        const mode = li.getAttribute('data-mode');
-        applyMode(mode);
-        setBtnLabel(btnEl, mode);
-        close();
-        });
-
-        document.addEventListener('click', (e) => {
-        if (!menuEl.contains(e.target) && !btnEl.contains(e.target)) close();
-        });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    // abre/fecha
+    btn.addEventListener('click', (e) => {
+    e.stopPropagation(); // não deixa o listener global fechar antes
+    menu.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', menu.classList.contains('hidden') ? 'false' : 'true');
     });
-    })();
+
+    // seleção via delegação (pega clique em qualquer filho)
+    menu.addEventListener('click', (e) => {
+    const opt = e.target.closest('[data-mode]');
+    if (!opt) return;
+    const mode = opt.getAttribute('data-mode');
+    try { localStorage.setItem(KEY, mode); } catch {}
+    if (window.setColorMode) window.setColorMode(mode);
+    btn.textContent = labelFor(mode);
+    menu.classList.add('hidden');
+    btn.setAttribute('aria-expanded', 'false');
+    });
+
+    // fecha ao clicar fora
+    document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+    }
+    });
+
+    // fecha com ESC
+    document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+    }
+    });
+}
+
+pickers.forEach(setup);
+});

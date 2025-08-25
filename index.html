@@ -21,9 +21,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
 
-    <!-- CSS custom -->
-    <link rel="stylesheet" href="css/styles.css" />
-    </head>
+    <!-- CSS: core + variantes por media -->
+    <link rel="stylesheet" href="css/core.css">
+    <link rel="stylesheet" href="css/mobile.css" media="(max-width: 639px)">
+    <link rel="stylesheet" href="css/desktop.css" media="(min-width: 640px)">
+</head>
 
 <body class="bg-white text-slate-800 dark:bg-slate-950 dark:text-slate-100">
 
@@ -318,11 +320,21 @@
     </section>
 
     <!-- ===================== SCRIPTS ===================== -->
-    <script src="js/theme-init.js" defer></script>
-    <script src="js/i18n.js" defer></script>
-    <script src="js/mode-controller.js" defer></script>
-    <script src="js/mode-picker.js" defer></script>
-    <script src="js/lang-picker.js" defer></script>
-  <script src="js/mobile-menu.js" defer></script>
+    <!-- JS comum (i18n/tema/pickers utilitários) -->
+    <script type="module" src="js/core.js"></script>
+
+    <!-- Escolhe dinamicamente o JS mobile/desktop -->
+    <script type="module">
+        const MQ = window.matchMedia('(max-width: 639px)');
+        function boot(e) {
+        if (e.matches) {
+            import('./js/mobile.js').then(m => m.init?.());
+        } else {
+            import('./js/desktop.js').then(m => m.init?.());
+        }
+        }
+        boot(MQ);
+        MQ.addEventListener?.('change', () => boot(MQ));
+    </script>
 </body>
 </html>
