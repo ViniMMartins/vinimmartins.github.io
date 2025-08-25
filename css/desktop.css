@@ -1,38 +1,104 @@
-/* =====================
-DESKTOP.CSS
-===================== */
+/* =========================================================
+    DESKTOP (a partir de 640px) — ajustes finos para telas largas
+    complementando os utilitários do Tailwind.
+   ========================================================= */
 
-/* Header */
+/* Base: tipografia mais confortável */
+html, body {
+    font-size: 16px;     /* default text-base */
+    line-height: 1.6;
+}
+
+/* Header / Navbar */
 header nav {
-display: flex;
-flex-direction: column;
+    padding-left: 1rem;  /* sm:px-4 */
+    padding-right: 1rem;
+    padding-top: 0.75rem; /* sm:py-3 */
+    padding-bottom: 0.75rem;
 }
 
-/* Links da navbar no desktop */
-@media (min-width: 640px) {
-nav > div > .flex.gap-5 a {
-    font-size: 0.875rem; /* text-sm */
-}
+/* HERO */
+section .justify-self-center img {
+    width: 14rem;   /* sm:w-56 */
+    height: 14rem;  /* sm:h-56 */
+    border-radius: 1rem;
 }
 
-/* Cards (works/projects) */
-@media (min-width: 640px) {
+/* Título e subtítulo mais robustos */
+h1 {
+    font-size: 2.875rem;   /* ~text-5xl */
+    line-height: 1.2;
+}
+[data-i18n="hero.subtitle"] {
+    font-size: 1.125rem;   /* text-lg */
+    opacity: 0.9;
+}
+
+/* Tags: espaçamento maior entre chips */
+section .flex.flex-wrap.justify-center.gap-2 {
+    row-gap: 0.5rem;
+    column-gap: 0.5rem;
+}
+section .flex.flex-wrap.justify-center.gap-2 > span {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+}
+
+/* CTA buttons lado a lado */
+.hero-cta,
+.mt-6.grid.grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 0.75rem;
+}
+a[data-i18n="hero.ctaProjects"],
+a[data-i18n="hero.ctaContact"] {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+}
+
+/* Seções About, Works, Projects com respiro maior */
+#about, #works, #projects, #cv, #contact {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+#about p {
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* Cards Works/Projects */
 #works article,
 #projects article {
-    padding: 1.5rem; /* p-6 */
+    border-radius: 1rem;
+    padding: 1.5rem;      /* sm:p-6 */
 }
+#works h3, #projects h3 {
+  font-size: 1.25rem;   /* sm:text-xl */
+}
+#works p, #projects p {
+    font-size: 0.95rem;
 }
 
-/* Botões de CV no desktop (grade de 2 colunas) */
-@media (min-width: 640px) {
+/* CV grid em 2 colunas */
 #cv .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
+#cv a {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
 }
 
-/* Hero tags (tecnologias) no desktop */
-@media (min-width: 640px) {
-#hero-tags span {
-    font-size: 0.875rem;
+/* Contact: espaçamento amplo entre itens */
+#contact .flex.flex-wrap.gap-6 {
+    gap: 1.5rem;
 }
-}
+#contact .inline-flex.items-center.gap-2 a {
+    word-break: break-word;
+    font-size: 0.95rem;
+    }
+
+/* Scroll margin mais folgada em desktop */
+.scroll-mt-24 { scroll-margin-top: 6rem; }
+.scroll-mt-28 { scroll-margin-top: 7rem; }

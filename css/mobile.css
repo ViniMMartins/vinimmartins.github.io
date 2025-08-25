@@ -1,69 +1,161 @@
-/* =====================
-MOBILE.CSS
-===================== */
+/* =========================================================
+    MOBILE (até 639px) — ajustes finos para melhorar legibilidade
+    e toque, mantendo o visual do desktop intacto.
+   ========================================================= */
 
-/* Ajuste no header: garante espaçamento confortável */
-@media (max-width: 639px) {
+/* Base: tipografia um pouco menor e respiros */
+html, body {
+    font-size: 14px;        /* ~text-sm */
+    line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* Header / Navbar */
 header nav {
-    display: block;
-    padding: 0.5rem 0.75rem; /* px-3 py-2 */
-}
-}
-
-/* Links da navbar somem (mobile usa hamburger) */
-@media (max-width: 639px) {
-nav > .hidden.sm\\:flex {
-    display: none !important;
-}
+    padding-left: 0.75rem;  /* px-3 */
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;    /* py-2 */
+    padding-bottom: 0.5rem;
 }
 
-/* Hero image menor no mobile */
-@media (max-width: 639px) {
-section img {
-    width: 7rem;   /* w-28 */
-    height: 7rem;  /* h-28 */
-}
+/* Botão hambúrguer maior área de toque */
+#mobile-menu-toggle {
+    min-height: 36px;
+    min-width: 36px;
 }
 
-/* Tags (chips de tecnologia) com scroll horizontal */
-@media (max-width: 639px) {
-#hero-tags {
-    display: flex;
-    overflow-x: auto;
-    gap: 0.5rem;
-    padding-bottom: 0.25rem;
-}
-#hero-tags::-webkit-scrollbar { display: none; }
-#hero-tags { -ms-overflow-style: none; scrollbar-width: none; }
+/* Menu mobile (container) — já controlado por data-open no core.css,
+   aqui só ajustes de layout e toques */
+#mobile-menu {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0.75rem;
+    border-radius: 1rem;
 }
 
-/* Botões de ação em grid 2 colunas no mobile */
-@media (max-width: 639px) {
-#hero-cta {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-}
+#mobile-left-list > a,
+#mobile-left-list > button {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
 }
 
-/* CV: botões em coluna única no mobile */
-@media (max-width: 639px) {
+/* Painel direito (opções de Tema/Idioma) */
+#mobile-right-panel {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+}
+#mobile-right-panel button {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+}
+
+/* HERO */
+section .justify-self-center img {
+    width: 9.5rem;   /* ~w-38 (entre 36 e 40) */
+    height: 9.5rem;  /* mantém proporção visual */
+    border-radius: 1rem;
+}
+
+/* Título e subtítulo mais compactos */
+h1 {
+    font-size: 1.75rem;   /* ~text-2xl/3xl */
+    line-height: 1.2;
+}
+[data-i18n="hero.subtitle"] {
+    font-size: 1rem;      /* ~text-base */
+    opacity: 0.9;
+}
+
+/* TAGS (skills) */
+.hero-tags,
+section .flex.flex-wrap.justify-center.gap-2 {
+    row-gap: 0.375rem;
+    column-gap: 0.375rem;
+}
+
+/* Cada tag: toque confortável e fonte legível */
+section .flex.flex-wrap.justify-center.gap-2 > span {
+    padding: 0.375rem 0.625rem;  /* px-2.5 py-1.5 */
+    font-size: 0.85rem;
+    border-radius: 9999px;
+}
+
+/* Limites de altura — no mobile removemos o clamp para não cortar skills */
+section .flex.flex-wrap.justify-center.gap-2 {
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+/* CTAs do herói: grid 2 col > 1 col se espaço ficar curto */
+@media (max-width: 420px) {
+    .hero-cta,
+    .mt-6.grid.grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Botões (Projects / Talk to me) com hit-area maior */
+a[data-i18n="hero.ctaProjects"],
+a[data-i18n="hero.ctaContact"] {
+    padding: 0.75rem 1rem; /* py-3 px-4 */
+    border-radius: 0.75rem;
+    text-align: center;
+    display: inline-block;
+}
+
+/* Seção About: melhora leitura */
+#about p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Cards das seções (Works/Projects) */
+#works article,
+#projects article {
+    border-radius: 1rem;
+    padding: 1rem;          /* p-4 */
+}
+#works h3, #projects h3 {
+    font-size: 1.1rem;
+}
+#works p, #projects p {
+    font-size: 0.9rem;
+}
+
+/* CV — grid em 1 coluna com botões grandes */
 #cv .grid {
     grid-template-columns: 1fr !important;
+    gap: 0.75rem;
 }
+#cv a {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    display: inline-block;
 }
 
-/* Menu mobile (hamburger) estilo overlay */
-@media (max-width: 639px) {
-#mobile-menu {
-    position: relative;
-    z-index: 50;
-    border-radius: 0.75rem;
-    border: 1px solid var(--tw-prose-borders, rgba(148,163,184,0.3));
-    padding: 0.75rem;
-    background-color: rgba(255, 255, 255, 0.9);
+/* Contact — forçar quebra correta e toque confortável */
+#contact .flex.flex-wrap.gap-6 {
+    gap: 0.75rem;
 }
-html.dark #mobile-menu {
-    background-color: rgba(15, 23, 42, 0.9); /* dark:bg-slate-900/90 */
+#contact .inline-flex.items-center.gap-2 a {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
 }
+
+/* Scroll margin para âncoras (menos que no desktop) */
+.scroll-mt-24 { scroll-margin-top: 5rem; }
+.scroll-mt-28 { scroll-margin-top: 5.5rem; }
+
+/* Pequenas correções de contraste em dark mode */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-color-mode="light"]) #mobile-menu {
+        background-color: rgba(15, 23, 42, 0.95); /* slate-900/95 */
+    }
+}
+
+/* Evitar zoom nos inputs em iOS (caso adicione inputs depois) */
+input, select, textarea {
+    font-size: 16px;
 }

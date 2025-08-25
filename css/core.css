@@ -2,8 +2,8 @@
 ACESSIBILIDADE & RESET
 ===================== */
 :focus-visible {
-outline: 2px solid currentColor;
-outline-offset: 2px;
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
 }
 
 .rounded-full { border-radius: 9999px; }
@@ -16,7 +16,7 @@ html { color-scheme: light; }
 
 /* Segue o SO se não houver atributo (modo "system") */
 @media (prefers-color-scheme: dark) {
-html:not([data-color-mode]) { color-scheme: dark; }
+    html:not([data-color-mode]) { color-scheme: dark; }
 }
 
 /* Forçar via atributo (controlado por JS) */
@@ -31,41 +31,41 @@ CONTROLES (Tema/Idioma)
 header { position: sticky; top: 0; z-index: 50; }
 #mode-picker, #lang-picker,
 #mode-picker-mobile, #lang-picker-mobile {
-position: relative;
-z-index: 51;          /* acima do header */
-pointer-events: auto; /* garante clique */
+    position: relative;
+    z-index: 51;          /* acima do header */
+    pointer-events: auto; /* garante clique */
 }
 #mode-btn, #lang-btn,
 #mode-btn-mobile, #lang-btn-mobile {
-background-color: transparent;
-color: inherit;
-border-color: color-mix(in oklab, currentColor 30%, transparent);
-position: relative;
-z-index: 52;          /* acima do container */
-pointer-events: auto;
+    background-color: transparent;
+    color: inherit;
+    border-color: color-mix(in oklab, currentColor 30%, transparent);
+    position: relative;
+    z-index: 52;          /* acima do container */
+    pointer-events: auto;
 }
 
 #mode-btn:focus, #lang-btn:focus,
 #mode-btn-mobile:focus, #lang-btn-mobile:focus {
-outline: none;
-box-shadow: 0 0 0 2px color-mix(in oklab, currentColor 50%, transparent);
-border-color: currentColor;
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in oklab, currentColor 50%, transparent);
+    border-color: currentColor;
 }
 
-/* Menus: quando fechados, não ocupam espaço nem capturam clique */
+/* Menus: quando fechados, não ocupam espaço nem capturam clique (fallback por classe) */
 #mode-menu.hidden,
 #lang-menu.hidden,
 #mode-menu-mobile.hidden,
 #lang-menu-mobile.hidden {
-display: none !important;
-pointer-events: none !important;
+    display: none !important;
+    pointer-events: none !important;
 }
 
 /* Menus abertos sobrepõem o header e não atrapalham links ao lado */
 #mode-menu, #lang-menu,
 #mode-menu-mobile, #lang-menu-mobile {
-position: absolute;
-z-index: 60; /* acima dos botões e do header */
+    position: absolute;
+    z-index: 60; /* base */
 }
 
 /* Ajusta popup para combinar com o tema */
@@ -77,20 +77,53 @@ html.dark #mode-menu-mobile,
 html[data-color-mode="dark"] #mode-menu-mobile,
 html.dark #lang-menu-mobile,
 html[data-color-mode="dark"] #lang-menu-mobile {
-color-scheme: dark;
+    color-scheme: dark;
 }
 html:not(.dark):not([data-color-mode="dark"]) #mode-menu,
 html:not(.dark):not([data-color-mode="dark"]) #lang-menu,
 html:not(.dark):not([data-color-mode="dark"]) #mode-menu-mobile,
 html:not(.dark):not([data-color-mode="dark"]) #lang-menu-mobile {
-color-scheme: light;
+    color-scheme: light;
+}
+
+/* ====== FIX DESKTOP DROPDOWNS ======
+    Usa data-open como “fonte da verdade” e sobe z-index
+    para evitar clipping por stacking context do header. */
+header, header nav, #mode-picker, #lang-picker {
+    overflow: visible !important;
+}
+#mode-menu, #lang-menu {
+    position: absolute;
+    z-index: 9999 !important;
+    pointer-events: auto;
+}
+#mode-menu[data-open="true"],
+#lang-menu[data-open="true"] {
+    display: block !important;
+}
+#mode-menu[data-open="false"],
+#lang-menu[data-open="false"] {
+    display: none !important;
 }
 
 /* =====================
 MOBILE MENU
 ===================== */
+/* (antigo) controla esconder/mostrar via classe */
 #mobile-menu { transition: all 0.3s ease-in-out; }
 #mobile-menu.hidden { display: none; }
+
+/* (novo) estado via atributo data-open para o mobile menu */
+#mobile-menu[data-open="false"] {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    pointer-events: none;
+}
+#mobile-menu[data-open="true"] {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
 
 /* =====================
 UTILITÁRIOS GERAIS
@@ -105,8 +138,8 @@ UTILITÁRIOS GERAIS
 ABOUT - garante texto completo
 ===================== */
 #about [data-i18n="about.body"] {
-white-space: normal;
-overflow: visible;
-display: block;
-max-width: none;
+    white-space: normal;
+    overflow: visible;
+    display: block;
+    max-width: none;
 }

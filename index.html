@@ -14,65 +14,43 @@
     <meta property="og:image" content="https://vinimmartins.github.io/assets/profile.png" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
 
-    <!-- Aplica tema inicial (antes de tudo) -->
+    <!-- Tema inicial -->
     <script src="js/theme-early.js"></script>
 
-    <!-- Tailwind CDN + config -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' };</script>
 
-    <!-- CSS: core + variantes por media -->
+    <!-- CSS do projeto -->
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/mobile.css" media="(max-width: 639px)">
     <link rel="stylesheet" href="css/desktop.css" media="(min-width: 640px)">
 
+    <!-- Mostrar botões de CV por idioma -->
     <style>
         :lang(en) .only-pt { display: none !important; }
         :lang(pt) .only-en { display: none !important; }
+
+        /* TEMP: mover para css/core.css no próximo passo */
+        #mobile-menu[data-open="false"] { opacity: 0; transform: translateY(-0.5rem); pointer-events: none; }
+        #mobile-menu[data-open="true"]  { opacity: 1; transform: translateY(0);        pointer-events: auto; }
     </style>
-
-    <script>
-  // Fallback robusto para o menu mobile
-    (function () {
-        function wireMobileMenu() {
-        var btn  = document.getElementById('mobile-menu-toggle');
-        var menu = document.getElementById('mobile-menu');
-        if (!btn || !menu) return;
-
-        // Evita múltiplos listeners se o script executar mais de uma vez
-        if (btn.__wired) return; 
-        btn.__wired = true;
-
-        btn.setAttribute('type', 'button'); // garante que não haja submit acidental
-        btn.addEventListener('click', function () {
-            var isHidden = menu.classList.contains('hidden');
-            menu.classList.toggle('hidden', !isHidden);
-            btn.setAttribute('aria-expanded', String(isHidden));
-        });
-        }
-
-        // Liga já e também após mudanças de viewport
-        document.addEventListener('DOMContentLoaded', wireMobileMenu);
-        window.addEventListener('resize', wireMobileMenu);
-    })();
-    </script>
-
 </head>
 
 <body class="text-xs sm:text-base bg-white text-slate-800 dark:bg-slate-950 dark:text-slate-100">
 
     <!-- ===================== HEADER / NAV ===================== -->
-    <header class="sticky top-0 z-50
-            bg-white/70 dark:bg-slate-900/60 backdrop-blur
-            supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-slate-900/60
-            [padding-top:env(safe-area-inset-top)]">
+    <header class="sticky top-0 z-50 relative
+                    bg-white/70 dark:bg-slate-900/60 backdrop-blur
+                    supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-slate-900/60
+                    [padding-top:env(safe-area-inset-top)]">
         <nav class="max-w-5xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
 
-        <!-- Linha superior: brand + (desktop controls) + (mobile hamburger) -->
+        <!-- Linha superior -->
         <div class="flex items-center justify-between">
             <a href="#" class="font-semibold text-base sm:text-sm" data-i18n="nav.resume">Resume</a>
 
-            <!-- DESKTOP: links + pickers -->
+            <!-- DESKTOP -->
             <div class="hidden sm:flex items-center gap-6">
             <div class="flex gap-5 text-sm">
                 <a href="#about" class="hover:underline" data-i18n="nav.about">About</a>
@@ -83,18 +61,18 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <!-- Theme picker (custom) -->
+                <!-- Theme picker (desktop) -->
                 <div class="flex items-center gap-2">
                 <span class="text-sm font-medium" data-i18n="label.theme">Theme</span>
                 <div id="mode-picker" class="relative">
                     <button id="mode-btn"
                             class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                                    border-slate-300 dark:border-slate-600
-                                    focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
-                            aria-haspopup="listbox" aria-expanded="false">💻 System Mode</button>
+                                border-slate-300 dark:border-slate-600
+                                focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+                            aria-haspopup="listbox" aria-expanded="false">💻 System</button>
                     <ul id="mode-menu"
                         class="absolute right-0 mt-2 w-48 rounded-xl border bg-white/95 dark:bg-slate-900/95
-                                backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
+                            backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
                         role="listbox" aria-labelledby="mode-btn">
                     <li role="option" data-mode="light"
                         class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center gap-2">
@@ -112,18 +90,18 @@
                 </div>
                 </div>
 
-                <!-- Language picker (custom) -->
+                <!-- Language picker (desktop) -->
                 <div class="flex items-center gap-2">
                 <span class="text-sm font-medium" data-i18n="label.language">Language</span>
                 <div id="lang-picker" class="relative">
                     <button id="lang-btn"
                             class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                                    border-slate-300 dark:border-slate-600
-                                    focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+                                border-slate-300 dark:border-slate-600
+                                focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
                             aria-haspopup="listbox" aria-expanded="false">EN (US)</button>
                     <ul id="lang-menu"
                         class="absolute right-0 mt-2 w-36 rounded-xl border bg-white/95 dark:bg-slate-900/95
-                                backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
+                            backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
                         role="listbox" aria-labelledby="lang-btn">
                     <li role="option" data-lang="en"
                         class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">EN (US)</li>
@@ -135,74 +113,76 @@
             </div>
             </div>
 
-            <!-- MOBILE: botão hamburguer -->
-            <button id="mobile-menu-toggle"
+            <!-- MOBILE: hambúrguer -->
+            <button id="mobile-menu-toggle" type="button"
                     class="sm:hidden rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                            border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2
-                            focus:ring-slate-500 dark:focus:ring-slate-400"
-                    aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
+                        border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2
+                        focus:ring-slate-500 dark:focus:ring-slate-400 grid place-items-center z-[110]"
+                    aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+            <span id="burger-icon" class="transition">☰</span>
+            <span id="close-icon"  class="hidden transition">✕</span>
+            </button>
         </div>
 
-        <!-- MENU MOBILE (dropdown completo) -->
+        <!-- MENU MOBILE: lista + painel lateral -->
         <div id="mobile-menu"
-            class="sm:hidden hidden mt-3 rounded-2xl border border-slate-200 dark:border-slate-700
-                        bg-white/90 dark:bg-slate-900/90 backdrop-blur p-3 space-y-2">
-            <div class="grid grid-cols-2 gap-3 text-sm">
-            <a class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#about" data-i18n="nav.about">About</a>
-            <a class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#works" data-i18n="nav.work">Work</a>
-            <a class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#projects" data-i18n="nav.projects">Projects</a>
-            <a class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#cv" data-i18n="nav.cv">CV</a>
-            <a class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#contact" data-i18n="nav.contact">Contact</a>
+            data-open="false"
+            class="sm:hidden absolute left-3 right-3 mt-3 rounded-2xl border
+                    border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95
+                    backdrop-blur p-3 shadow-2xl
+                    transition duration-200 ease-out
+                    text-slate-800 dark:text-slate-100 z-[100]">
+
+            <div class="grid grid-cols-2 gap-3">
+            <!-- Coluna ESQUERDA -->
+            <div id="mobile-left-list" class="space-y-2">
+                <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                href="#about" data-i18n="nav.about">About</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                href="#works" data-i18n="nav.work">Work</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                href="#projects" data-i18n="nav.projects">Projects</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                href="#cv" data-i18n="nav.cv">CV</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                href="#contact" data-i18n="nav.contact">Contact</a>
+
+                <hr class="border-slate-200 dark:border-slate-700">
+
+                <button data-panel="theme"
+                        class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                <span data-i18n="label.theme">Theme</span>
+                </button>
+                <button data-panel="lang"
+                        class="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                <span data-i18n="label.language">Language</span>
+                </button>
             </div>
 
-            <hr class="border-slate-200 dark:border-slate-700 my-2">
+            <!-- Coluna DIREITA -->
+            <div id="mobile-right-panel"
+                class="rounded-xl border border-slate-200 dark:border-slate-700 p-3 min-h-[180px]">
+                <div id="panel-hint" class="text-sm opacity-80">
+                Toque em <b data-i18n="label.theme">Theme</b> ou <b data-i18n="label.language">Language</b> ao lado para ver opções.
+                </div>
 
-            <!-- pickers dentro do menu mobile -->
-            <div class="flex items-center justify-between gap-3">
-            <span class="text-sm font-medium" data-i18n="label.theme">Theme</span>
-            <div id="mode-picker-mobile" class="relative">
-                <button id="mode-btn-mobile"
-                        class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                                border-slate-300 dark:border-slate-600
-                                focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
-                        aria-haspopup="listbox" aria-expanded="false">💻 System</button>
-                <ul id="mode-menu-mobile"
-                    class="absolute right-0 mt-2 w-48 rounded-xl border bg-white/95 dark:bg-slate-900/95
-                            backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
-                    role="listbox" aria-labelledby="mode-btn-mobile">
-                <li role="option" data-mode="light"
-                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center gap-2">
-                    <span>☀️</span><span data-i18n="mode.light">Light</span>
-                </li>
-                <li role="option" data-mode="dark"
-                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center gap-2">
-                    <span>🌙</span><span data-i18n="mode.dark">Dark</span>
-                </li>
-                <li role="option" data-mode="system"
-                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center gap-2">
-                    <span>💻</span><span data-i18n="mode.system">System</span>
-                </li>
-                </ul>
-            </div>
-            </div>
+                <!-- Tema -->
+                <div id="panel-theme" class="hidden space-y-2">
+                <button data-mode="light"
+                        class="w-full px-3 py-2 rounded-lg border hover:bg-slate-100 dark:hover:bg-slate-800">☀️ Light</button>
+                <button data-mode="dark"
+                        class="w-full px-3 py-2 rounded-lg border hover:bg-slate-100 dark:hover:bg-slate-800">🌙 Dark</button>
+                <button data-mode="system"
+                        class="w-full px-3 py-2 rounded-lg border hover:bg-slate-100 dark:hover:bg-slate-800">💻 System</button>
+                </div>
 
-            <div class="flex items-center justify-between gap-3">
-            <span class="text-sm font-medium" data-i18n="label.language">Language</span>
-            <div id="lang-picker-mobile" class="relative">
-                <button id="lang-btn-mobile"
-                        class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                                border-slate-300 dark:border-slate-600
-                                focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
-                        aria-haspopup="listbox" aria-expanded="false">EN (US)</button>
-                <ul id="lang-menu-mobile"
-                    class="absolute right-0 mt-2 w-36 rounded-xl border bg-white/95 dark:bg-slate-900/95
-                            backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
-                    role="listbox" aria-labelledby="lang-btn-mobile">
-                <li role="option" data-lang="en"
-                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">EN (US)</li>
-                <li role="option" data-lang="pt"
-                    class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">PT (BR)</li>
-                </ul>
+                <!-- Idioma -->
+                <div id="panel-lang" class="hidden space-y-2">
+                <button data-lang="en"
+                        class="w-full px-3 py-2 rounded-lg border hover:bg-slate-100 dark:hover:bg-slate-800">EN (US)</button>
+                <button data-lang="pt"
+                        class="w-full px-3 py-2 rounded-lg border hover:bg-slate-100 dark:hover:bg-slate-800">PT (BR)</button>
+                </div>
             </div>
             </div>
         </div>
@@ -215,23 +195,21 @@
     <section class="max-w-5xl mx-auto px-4 py-10 sm:py-16
                     grid gap-6 sm:gap-10 sm:grid-cols-[0.4fr,1.6fr] items-center">
 
-        <!-- FOTO: antes do nome no mobile e à esquerda no desktop -->
+        <!-- Foto -->
         <div class="justify-self-center order-1 sm:order-1">
         <img src="assets/profile.png" alt="Photo of Vinicius Martins"
             class="w-40 h-40 sm:w-56 sm:h-56 rounded-2xl object-cover shadow-lg">
         </div>
 
-        <!-- TEXTO: depois da foto no mobile e à direita no desktop -->
+        <!-- Texto -->
         <div class="order-2 sm:order-2 text-center">
         <h1 class="text-3xl sm:text-5xl font-bold tracking-tight">Vinícius M. Martins</h1>
         <p class="mt-2 sm:mt-3 text-base sm:text-lg opacity-90" data-i18n="hero.subtitle">
             Senior Automation Developer at Practia Global
         </p>
 
-        <!-- TAGS centralizadas -->
-        <!-- TAGS centralizadas -->
+        <!-- Tags -->
         <div class="mt-4 sm:mt-5 flex flex-wrap justify-center gap-2">
-
             <span class="inline-flex items-center rounded-full border px-3 py-1 text-sm">Python</span>
             <span class="inline-flex items-center rounded-full border px-3 py-1 text-sm">BotCity</span>
             <span class="inline-flex items-center rounded-full border px-3 py-1 text-sm">Automation Anywhere</span>
@@ -250,7 +228,7 @@
             <span class="inline-flex items-center rounded-full border px-3 py-1 text-sm">CSS3</span>
         </div>
 
-        <!-- BOTÕES centralizados -->
+        <!-- CTA -->
         <div class="mt-6 sm:mt-8 grid grid-cols-2 gap-3 w-full sm:w-auto sm:flex justify-center">
             <a href="#projects" class="text-center px-4 py-3 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900" data-i18n="hero.ctaProjects">Projects</a>
             <a href="#contact" class="text-center px-4 py-3 rounded-xl border" data-i18n="hero.ctaContact">Talk to me</a>
@@ -319,28 +297,26 @@
     <section id="cv" class="scroll-mt-24 sm:scroll-mt-28 max-w-5xl mx-auto px-4 py-8 sm:py-12">
         <h2 class="text-xl sm:text-2xl font-semibold">CV</h2>
         <p class="mt-3 leading-relaxed text-[15px] sm:text-base" data-i18n="cv.lead">
-            Access my complete CV through the link below:
+        Access my complete CV through the link below:
         </p>
 
         <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <!-- EN buttons -->
-            <a href="assets/CV_ViniciusMatheusMartins_EN.pdf"
+        <!-- EN -->
+        <a href="assets/CV_ViniciusMatheusMartins_EN.pdf"
             target="_blank" rel="noopener"
             class="only-en inline-block text-center px-5 py-3 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-semibold shadow hover:shadow-lg transition"
             data-i18n="cv.openEn">Open CV (EN)</a>
-
-            <a href="assets/CV_ViniciusMatheusMartins_EN.pdf"
+        <a href="assets/CV_ViniciusMatheusMartins_EN.pdf"
             download="CV_ViniciusMatheusMartins_EN.pdf" type="application/pdf"
             class="only-en inline-block text-center px-5 py-3 rounded-xl border font-semibold hover:shadow-lg transition"
             data-i18n="cv.downloadEn">Download CV (EN)</a>
 
-            <!-- PT buttons -->
-            <a href="assets/CV_ViniciusMatheusMartins_PT.pdf"
+        <!-- PT -->
+        <a href="assets/CV_ViniciusMatheusMartins_PT.pdf"
             target="_blank" rel="noopener"
             class="only-pt inline-block text-center px-5 py-3 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-semibold shadow hover:shadow-lg transition"
             data-i18n="cv.openPt">Abrir CV (PT)</a>
-
-            <a href="assets/CV_ViniciusMatheusMartins_PT.pdf"
+        <a href="assets/CV_ViniciusMatheusMartins_PT.pdf"
             download="CV_ViniciusMatheusMartins_PT.pdf" type="application/pdf"
             class="only-pt inline-block text-center px-5 py-3 rounded-xl border font-semibold hover:shadow-lg transition"
             data-i18n="cv.downloadPt">Baixar CV (PT)</a>
@@ -352,48 +328,207 @@
         <h2 class="text-xl sm:text-2xl font-semibold mb-2" data-i18n="contact.title">Contact</h2>
 
         <div class="flex flex-wrap gap-6">
-            <span class="inline-flex items-center gap-2">
+        <span class="inline-flex items-center gap-2">
             <span>LinkedIn:</span>
             <a class="underline break-words"
-                href="https://www.linkedin.com/in/vinicius-m-martins" target="_blank" rel="noopener">
-                vinicius-m-martins
+            href="https://www.linkedin.com/in/vinicius-m-martins" target="_blank" rel="noopener">
+            vinicius-m-martins
             </a>
-            </span>
+        </span>
 
-            <span class="inline-flex items-center gap-2">
+        <span class="inline-flex items-center gap-2">
             <span data-i18n="contact.emailLabel">E-mail:</span>
             <a class="underline break-words" href="mailto:vmmartins95@gmail.com">
-                vmmartins95@gmail.com
+            vmmartins95@gmail.com
             </a>
-            </span>
+        </span>
 
-            <span class="inline-flex items-center gap-2">
+        <span class="inline-flex items-center gap-2">
             <span>GitHub:</span>
             <a class="underline break-words"
-                href="https://github.com/ViniMMartins" target="_blank" rel="noopener">
-                @ViniMMartins
+            href="https://github.com/ViniMMartins" target="_blank" rel="noopener">
+            @ViniMMartins
             </a>
-            </span>
+        </span>
         </div>
     </section>
 
-
     <!-- ===================== SCRIPTS ===================== -->
-    <!-- JS comum (i18n/tema/pickers utilitários) -->
     <script type="module" src="js/core.js"></script>
 
-    <!-- Escolhe dinamicamente o JS mobile/desktop -->
+    <!-- Import dinâmico protegido -->
     <script type="module">
+        let __booting = false;
+        let __modeLoaded = null; // 'mobile' | 'desktop'
         const MQ = window.matchMedia('(max-width: 639px)');
-        function boot(e) {
-        if (e.matches) {
-            import('./js/mobile.js').then(m => m.init?.());
-        } else {
-            import('./js/desktop.js').then(m => m.init?.());
+
+        async function boot(e) {
+        const mode = e.matches ? 'mobile' : 'desktop';
+        if (__booting || __modeLoaded === mode) return;
+        __booting = true;
+        try {
+            if (mode === 'mobile') {
+            const m = await import('./js/mobile.js');
+            m.init?.();
+            } else {
+            const d = await import('./js/desktop.js');
+            d.init?.();
+            }
+            __modeLoaded = mode;
+        } finally {
+            __booting = false;
         }
         }
+
         boot(MQ);
-        MQ.addEventListener?.('change', () => boot(MQ));
+        let resizeTimer;
+        MQ.addEventListener?.('change', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => boot(MQ), 150);
+        });
+    </script>
+
+    <!-- Lógica de tema/idioma + menu com data-open + delegação + fallback i18n -->
+    <script>
+        (function () {
+        const $ = (s) => document.querySelector(s);
+
+        // ---------- Tema ----------
+        function applyTheme(mode) {
+            try { localStorage.setItem('theme-preference', mode); } catch {}
+            const dark = (mode === 'dark') || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            document.documentElement.classList.toggle('dark', dark);
+            document.documentElement.dataset.theme = mode;
+            const label = mode === 'light' ? '☀️ Light' : mode === 'dark' ? '🌙 Dark' : '💻 System';
+            const b1 = $('#mode-btn'); if (b1) b1.textContent = label;
+        }
+
+        // ---------- Idioma ----------
+        function applyLang(lang) {
+            document.documentElement.lang = lang;
+            try { localStorage.setItem('lang-preference', lang); } catch {}
+            const label = lang === 'pt' ? 'PT (BR)' : 'EN (US)';
+            const l1 = $('#lang-btn'); if (l1) l1.textContent = label;
+        }
+
+        // Prefs iniciais
+        applyTheme(localStorage.getItem('theme-preference') || 'system');
+        applyLang(localStorage.getItem('lang-preference') || document.documentElement.lang || 'en');
+
+        // ---------- Desktop pickers (delegação simples) ----------
+        const modeBtn = $('#mode-btn'), modeMenu = $('#mode-menu');
+        if (modeBtn && modeMenu) {
+            modeBtn.addEventListener('click', () => {
+            modeMenu.classList.toggle('hidden');
+            modeBtn.setAttribute('aria-expanded', String(!modeMenu.classList.contains('hidden')));
+            });
+            modeMenu.addEventListener('click', (e) => {
+            const li = e.target.closest('[data-mode]');
+            if (!li) return;
+            applyTheme(li.dataset.mode);
+            modeMenu.classList.add('hidden');
+            modeBtn.setAttribute('aria-expanded','false');
+            });
+            document.addEventListener('click', e => {
+            if (!modeMenu.contains(e.target) && e.target !== modeBtn) modeMenu.classList.add('hidden');
+            });
+        }
+
+        const langBtn = $('#lang-btn'), langMenu = $('#lang-menu');
+        if (langBtn && langMenu) {
+            langBtn.addEventListener('click', () => {
+            langMenu.classList.toggle('hidden');
+            langBtn.setAttribute('aria-expanded', String(!langMenu.classList.contains('hidden')));
+            });
+            langMenu.addEventListener('click', (e) => {
+            const li = e.target.closest('[data-lang]');
+            if (!li) return;
+            applyLang(li.dataset.lang);
+            langMenu.classList.add('hidden');
+            langBtn.setAttribute('aria-expanded','false');
+            });
+            document.addEventListener('click', e => {
+            if (!langMenu.contains(e.target) && e.target !== langBtn) langMenu.classList.add('hidden');
+            });
+        }
+
+        // ---------- Menu mobile com data-open ----------
+        const btn  = $('#mobile-menu-toggle');
+        const menu = $('#mobile-menu');
+        const bIco = $('#burger-icon');
+        const cIco = $('#close-icon');
+
+        function setMenuOpen(open) {
+            if (!menu || !btn) return;
+            menu.setAttribute('data-open', open ? 'true' : 'false');
+            btn.setAttribute('aria-expanded', String(open));
+            if (bIco && cIco) { bIco.classList.toggle('hidden', open); cIco.classList.toggle('hidden', !open); }
+        }
+        function toggleMobileMenu() {
+            const isOpen = menu?.getAttribute('data-open') === 'true';
+            setMenuOpen(!isOpen);
+        }
+
+        btn?.addEventListener('click', (e) => { e.stopPropagation(); toggleMobileMenu(); });
+
+        // Fechar ao clicar fora (sem bloquear botão/menu)
+        document.addEventListener('click', (e) => {
+            const isOpen = menu?.getAttribute('data-open') === 'true';
+            if (!isOpen || !menu || !btn) return;
+            if (menu.contains(e.target) || btn.contains(e.target)) return;
+            setMenuOpen(false);
+        });
+
+        // ---------- Mobile: delegação para painéis ----------
+        const leftList   = $('#mobile-left-list');
+        const rightPanel = $('#mobile-right-panel');
+        const hint       = $('#panel-hint');
+        const panelTheme = $('#panel-theme');
+        const panelLang  = $('#panel-lang');
+
+        function showPanel(which) {
+            hint?.classList.add('hidden');
+            panelTheme?.classList.toggle('hidden', which !== 'theme');
+            panelLang ?.classList.toggle('hidden', which !== 'lang');
+        }
+
+        leftList?.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-panel]');
+            if (!btn) return;
+            showPanel(btn.getAttribute('data-panel'));
+        });
+
+        rightPanel?.addEventListener('click', (e) => {
+            const t = e.target.closest('[data-mode]');
+            const l = e.target.closest('[data-lang]');
+            if (t) applyTheme(t.getAttribute('data-mode'));
+            if (l) applyLang(l.getAttribute('data-lang'));
+        });
+
+        // ---------- Fallbacks i18n (evita lista “vazia”) ----------
+        const fallback = {
+            'nav.about':'About','nav.work':'Work','nav.projects':'Projects','nav.cv':'CV','nav.contact':'Contact',
+            'label.theme':'Theme','label.language':'Language',
+            'mode.light':'Light','mode.dark':'Dark','mode.system':'System'
+        };
+        function applyFallbacks(root=document) {
+            root.querySelectorAll('[data-i18n]').forEach(el => {
+            if (!el.textContent.trim()) {
+                const k = el.getAttribute('data-i18n');
+                if (fallback[k]) el.textContent = fallback[k];
+            }
+            });
+        }
+        applyFallbacks();
+
+        new MutationObserver(muts => {
+            muts.forEach(m => {
+            if (m.type === 'childList' || (m.type === 'attributes' && m.attributeName === 'data-i18n')) {
+                applyFallbacks(m.target.nodeType === 1 ? m.target : document);
+            }
+            });
+        }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-i18n'] });
+        })();
     </script>
 </body>
 </html>
