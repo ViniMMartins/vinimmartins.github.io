@@ -26,7 +26,7 @@ const i18n = {
     'projects.compraFacil.desc': 'Home system for purchase and stock control with 2D reader (QR/EAN). Built with Flask + SQLite, lookup in Open Food Facts.',
     'projects.code': 'Code',
     'projects.docs': 'Docs',
-    'cv.lead': 'Access my complete CV through the link below:',
+    'cv.lead': 'Access my full CV below:',
     'cv.openEn': 'Open CV (EN)',
     'cv.downloadEn': 'Download CV (EN)',
     'cv.openPt': 'Open CV (PT)',

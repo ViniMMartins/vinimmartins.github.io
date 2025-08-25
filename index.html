@@ -25,15 +25,47 @@
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/mobile.css" media="(max-width: 639px)">
     <link rel="stylesheet" href="css/desktop.css" media="(min-width: 640px)">
+
+    <style>
+        :lang(en) .only-pt { display: none !important; }
+        :lang(pt) .only-en { display: none !important; }
+    </style>
+
+    <script>
+  // Fallback robusto para o menu mobile
+    (function () {
+        function wireMobileMenu() {
+        var btn  = document.getElementById('mobile-menu-toggle');
+        var menu = document.getElementById('mobile-menu');
+        if (!btn || !menu) return;
+
+        // Evita múltiplos listeners se o script executar mais de uma vez
+        if (btn.__wired) return; 
+        btn.__wired = true;
+
+        btn.setAttribute('type', 'button'); // garante que não haja submit acidental
+        btn.addEventListener('click', function () {
+            var isHidden = menu.classList.contains('hidden');
+            menu.classList.toggle('hidden', !isHidden);
+            btn.setAttribute('aria-expanded', String(isHidden));
+        });
+        }
+
+        // Liga já e também após mudanças de viewport
+        document.addEventListener('DOMContentLoaded', wireMobileMenu);
+        window.addEventListener('resize', wireMobileMenu);
+    })();
+    </script>
+
 </head>
 
-<body class="bg-white text-slate-800 dark:bg-slate-950 dark:text-slate-100">
+<body class="text-xs sm:text-base bg-white text-slate-800 dark:bg-slate-950 dark:text-slate-100">
 
     <!-- ===================== HEADER / NAV ===================== -->
     <header class="sticky top-0 z-50
-        bg-white/70 dark:bg-slate-900/60 backdrop-blur
-        supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-slate-900/60
-        [padding-top:env(safe-area-inset-top)]">
+            bg-white/70 dark:bg-slate-900/60 backdrop-blur
+            supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-slate-900/60
+            [padding-top:env(safe-area-inset-top)]">
         <nav class="max-w-5xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
 
         <!-- Linha superior: brand + (desktop controls) + (mobile hamburger) -->
@@ -57,12 +89,12 @@
                 <div id="mode-picker" class="relative">
                     <button id="mode-btn"
                             class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                                border-slate-300 dark:border-slate-600
-                                focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+                                    border-slate-300 dark:border-slate-600
+                                    focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
                             aria-haspopup="listbox" aria-expanded="false">💻 System Mode</button>
                     <ul id="mode-menu"
                         class="absolute right-0 mt-2 w-48 rounded-xl border bg-white/95 dark:bg-slate-900/95
-                            backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
+                                backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
                         role="listbox" aria-labelledby="mode-btn">
                     <li role="option" data-mode="light"
                         class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center gap-2">
@@ -86,12 +118,12 @@
                 <div id="lang-picker" class="relative">
                     <button id="lang-btn"
                             class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                                border-slate-300 dark:border-slate-600
-                                focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+                                    border-slate-300 dark:border-slate-600
+                                    focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
                             aria-haspopup="listbox" aria-expanded="false">EN (US)</button>
                     <ul id="lang-menu"
                         class="absolute right-0 mt-2 w-36 rounded-xl border bg-white/95 dark:bg-slate-900/95
-                            backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
+                                backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
                         role="listbox" aria-labelledby="lang-btn">
                     <li role="option" data-lang="en"
                         class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">EN (US)</li>
@@ -106,15 +138,15 @@
             <!-- MOBILE: botão hamburguer -->
             <button id="mobile-menu-toggle"
                     class="sm:hidden rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                        border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2
-                        focus:ring-slate-500 dark:focus:ring-slate-400"
+                            border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2
+                            focus:ring-slate-500 dark:focus:ring-slate-400"
                     aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">☰</button>
         </div>
 
         <!-- MENU MOBILE (dropdown completo) -->
         <div id="mobile-menu"
             class="sm:hidden hidden mt-3 rounded-2xl border border-slate-200 dark:border-slate-700
-                    bg-white/90 dark:bg-slate-900/90 backdrop-blur p-3 space-y-2">
+                        bg-white/90 dark:bg-slate-900/90 backdrop-blur p-3 space-y-2">
             <div class="grid grid-cols-2 gap-3 text-sm">
             <a class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#about" data-i18n="nav.about">About</a>
             <a class="px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" href="#works" data-i18n="nav.work">Work</a>
@@ -131,12 +163,12 @@
             <div id="mode-picker-mobile" class="relative">
                 <button id="mode-btn-mobile"
                         class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                            border-slate-300 dark:border-slate-600
-                            focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+                                border-slate-300 dark:border-slate-600
+                                focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
                         aria-haspopup="listbox" aria-expanded="false">💻 System</button>
                 <ul id="mode-menu-mobile"
                     class="absolute right-0 mt-2 w-48 rounded-xl border bg-white/95 dark:bg-slate-900/95
-                        backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
+                            backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
                     role="listbox" aria-labelledby="mode-btn-mobile">
                 <li role="option" data-mode="light"
                     class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg flex items-center gap-2">
@@ -159,12 +191,12 @@
             <div id="lang-picker-mobile" class="relative">
                 <button id="lang-btn-mobile"
                         class="rounded-xl border px-3 py-1 text-sm bg-transparent text-inherit
-                            border-slate-300 dark:border-slate-600
-                            focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+                                border-slate-300 dark:border-slate-600
+                                focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
                         aria-haspopup="listbox" aria-expanded="false">EN (US)</button>
                 <ul id="lang-menu-mobile"
                     class="absolute right-0 mt-2 w-36 rounded-xl border bg-white/95 dark:bg-slate-900/95
-                        backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
+                            backdrop-blur shadow-lg border-slate-200 dark:border-slate-700 hidden"
                     role="listbox" aria-labelledby="lang-btn-mobile">
                 <li role="option" data-lang="en"
                     class="cursor-pointer px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">EN (US)</li>
@@ -182,17 +214,24 @@
     <!-- ===================== HERO ===================== -->
     <section class="max-w-5xl mx-auto px-4 py-10 sm:py-16
                     grid gap-6 sm:gap-10 sm:grid-cols-[0.4fr,1.6fr] items-center">
-        <div class="justify-self-center order-2 sm:order-1">
+
+        <!-- FOTO: antes do nome no mobile e à esquerda no desktop -->
+        <div class="justify-self-center order-1 sm:order-1">
         <img src="assets/profile.png" alt="Photo of Vinicius Martins"
-            class="w-28 h-28 sm:w-56 sm:h-56 rounded-2xl object-cover shadow-lg">
+            class="w-40 h-40 sm:w-56 sm:h-56 rounded-2xl object-cover shadow-lg">
         </div>
-        <div class="order-1 sm:order-2">
+
+        <!-- TEXTO: depois da foto no mobile e à direita no desktop -->
+        <div class="order-2 sm:order-2 text-center">
         <h1 class="text-3xl sm:text-5xl font-bold tracking-tight">Vinícius M. Martins</h1>
         <p class="mt-2 sm:mt-3 text-base sm:text-lg opacity-90" data-i18n="hero.subtitle">
             Senior Automation Developer at Practia Global
         </p>
 
-        <div class="mt-4 sm:mt-5 flex flex-wrap gap-2 max-h-[calc(2*2.25rem)] sm:max-h-none overflow-x-auto no-scrollbar">
+        <!-- TAGS centralizadas -->
+        <!-- TAGS centralizadas -->
+        <div class="mt-4 sm:mt-5 flex flex-wrap justify-center gap-2">
+
             <span class="inline-flex items-center rounded-full border px-3 py-1 text-sm">Python</span>
             <span class="inline-flex items-center rounded-full border px-3 py-1 text-sm">BotCity</span>
             <span class="inline-flex items-center rounded-full border px-3 py-1 text-sm">Automation Anywhere</span>
@@ -211,7 +250,8 @@
             <span class="inline-flex items-center rounded-full border px-3 py-1 text-sm">CSS3</span>
         </div>
 
-        <div class="mt-6 sm:mt-8 grid grid-cols-2 gap-3 w-full sm:w-auto sm:flex">
+        <!-- BOTÕES centralizados -->
+        <div class="mt-6 sm:mt-8 grid grid-cols-2 gap-3 w-full sm:w-auto sm:flex justify-center">
             <a href="#projects" class="text-center px-4 py-3 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900" data-i18n="hero.ctaProjects">Projects</a>
             <a href="#contact" class="text-center px-4 py-3 rounded-xl border" data-i18n="hero.ctaContact">Talk to me</a>
         </div>
@@ -278,46 +318,65 @@
     <!-- ===================== CV ===================== -->
     <section id="cv" class="scroll-mt-24 sm:scroll-mt-28 max-w-5xl mx-auto px-4 py-8 sm:py-12">
         <h2 class="text-xl sm:text-2xl font-semibold">CV</h2>
-        <p class="mt-3 leading-relaxed text-[15px] sm:text-base" data-i18n="cv.lead">Access my complete CV through the link below:</p>
+        <p class="mt-3 leading-relaxed text-[15px] sm:text-base" data-i18n="cv.lead">
+            Access my complete CV through the link below:
+        </p>
+
         <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-        <a href="assets/CV_ViniciusMatheusMartins_EN.pdf"
+            <!-- EN buttons -->
+            <a href="assets/CV_ViniciusMatheusMartins_EN.pdf"
             target="_blank" rel="noopener"
-            class="inline-block text-center px-5 py-3 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-semibold shadow hover:shadow-lg transition"
+            class="only-en inline-block text-center px-5 py-3 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-semibold shadow hover:shadow-lg transition"
             data-i18n="cv.openEn">Open CV (EN)</a>
 
-        <a href="assets/CV_ViniciusMatheusMartins_EN.pdf" download="CV_ViniciusMatheusMartins_EN.pdf" type="application/pdf"
-            class="inline-block text-center px-5 py-3 rounded-xl border font-semibold hover:shadow-lg transition"
+            <a href="assets/CV_ViniciusMatheusMartins_EN.pdf"
+            download="CV_ViniciusMatheusMartins_EN.pdf" type="application/pdf"
+            class="only-en inline-block text-center px-5 py-3 rounded-xl border font-semibold hover:shadow-lg transition"
             data-i18n="cv.downloadEn">Download CV (EN)</a>
 
-        <a href="assets/CV_ViniciusMatheusMartins_PT.pdf"
+            <!-- PT buttons -->
+            <a href="assets/CV_ViniciusMatheusMartins_PT.pdf"
             target="_blank" rel="noopener"
-            class="inline-block text-center px-5 py-3 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-semibold shadow hover:shadow-lg transition"
-            data-i18n="cv.openPt">Open CV (PT)</a>
+            class="only-pt inline-block text-center px-5 py-3 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-semibold shadow hover:shadow-lg transition"
+            data-i18n="cv.openPt">Abrir CV (PT)</a>
 
-        <a href="assets/CV_ViniciusMatheusMartins_PT.pdf" download="CV_ViniciusMatheusMartins_PT.pdf" type="application/pdf"
-            class="inline-block text-center px-5 py-3 rounded-xl border font-semibold hover:shadow-lg transition"
-            data-i18n="cv.downloadPt">Download CV (PT)</a>
+            <a href="assets/CV_ViniciusMatheusMartins_PT.pdf"
+            download="CV_ViniciusMatheusMartins_PT.pdf" type="application/pdf"
+            class="only-pt inline-block text-center px-5 py-3 rounded-xl border font-semibold hover:shadow-lg transition"
+            data-i18n="cv.downloadPt">Baixar CV (PT)</a>
         </div>
     </section>
 
     <!-- ===================== CONTACT ===================== -->
     <section id="contact" class="scroll-mt-24 sm:scroll-mt-28 max-w-5xl mx-auto px-4 py-8 sm:py-12">
         <h2 class="text-xl sm:text-2xl font-semibold mb-2" data-i18n="contact.title">Contact</h2>
+
         <div class="flex flex-wrap gap-6">
-        <span>LinkedIn:
-            <a class="underline" href="https://www.linkedin.com/in/vinicius-m-martins" target="_blank" rel="noopener">
-            vinicius-m-martins
+            <span class="inline-flex items-center gap-2">
+            <span>LinkedIn:</span>
+            <a class="underline break-words"
+                href="https://www.linkedin.com/in/vinicius-m-martins" target="_blank" rel="noopener">
+                vinicius-m-martins
             </a>
-        </span>
-        <span data-i18n="contact.emailLabel">Email:</span>
-        <a class="underline" href="mailto:vmmartins95@gmail.com">vmmartins95@gmail.com</a>
-        <span>GitHub:
-            <a class="underline" href="https://github.com/ViniMMartins" target="_blank" rel="noopener">
-            @ViniMMartins
+            </span>
+
+            <span class="inline-flex items-center gap-2">
+            <span data-i18n="contact.emailLabel">E-mail:</span>
+            <a class="underline break-words" href="mailto:vmmartins95@gmail.com">
+                vmmartins95@gmail.com
             </a>
-        </span>
+            </span>
+
+            <span class="inline-flex items-center gap-2">
+            <span>GitHub:</span>
+            <a class="underline break-words"
+                href="https://github.com/ViniMMartins" target="_blank" rel="noopener">
+                @ViniMMartins
+            </a>
+            </span>
         </div>
     </section>
+
 
     <!-- ===================== SCRIPTS ===================== -->
     <!-- JS comum (i18n/tema/pickers utilitários) -->
